@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Bell : MonoBehaviour, IPointerDownHandler
+public class Bell : MonoBehaviour
 {
     [SerializeField] private GameController _GameController;
     [SerializeField] private Animator _Animator;
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnMouseDown()
     {
         if(_GameController.GameState == GameState.Menu)
         {
             RingStandard();
-            _GameController.UpdateGameState();
+            _GameController.TriggerGameState();
         }
         
     }
