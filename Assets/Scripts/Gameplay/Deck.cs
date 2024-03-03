@@ -34,6 +34,7 @@ public class Deck : MonoBehaviour
 
     public void UpdateDeckAmount()
     {
-        _Animator.SetTrigger("TriggerBell");
+        //Fill Deck
+        _Animator.SetTrigger("RemoveCards");
     }
 }
