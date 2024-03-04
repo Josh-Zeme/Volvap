@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private List<Unit> _Units;
     [SerializeField] private Deck _Deck;
+    [SerializeField] private RoofLight _RoofLight;
 
     public GameState GameState = GameState.None;
     
@@ -37,10 +38,16 @@ public class GameController : MonoBehaviour
                 GameState = GameState.TutorialRound;
                 // trigger clock move
                 // trigger saliva
-                // light move
-                // lighting flicer
+                for(int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _RoofLight.TriggerForce(new Vector2(100, 0));
+                _RoofLight.TriggerFlicker(1.5f, new List<float>() {0.2f, 0.25f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.61f });
                 _InGameCamera.Priority = 1;
                 _PreGameCamera.Priority = 0;
+
                 // trigger card drawing
                 break;
             default:

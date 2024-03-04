@@ -104,7 +104,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: -0.34800053}
+  m_ConnectedAnchor: {x: 0, y: -0.34799957}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_ComponentVersion: 1
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.387
+  m_FalloffIntensity: 0.378
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
@@ -412,7 +412,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.4100001, y: 10.53}
+  m_ConnectedAnchor: {x: 0.4100001, y: 12.295519}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -843,6 +843,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6420613665979963716}
+  - component: {fileID: 3696960302492687090}
   m_Layer: 0
   m_Name: Light Object
   m_TagString: Untagged
@@ -872,6 +873,22 @@ Transform:
   - {fileID: 2161518106747437435}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3696960302492687090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997839386503090678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a90d4500043bba49b8426079ab77c3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _OriginalColor: {r: 0, g: 0, b: 0, a: 0}
+  _FlickerColor: {r: 0, g: 0, b: 0, a: 0}
+  _Rigidbody2D: {fileID: 4029405621737158153}
+  _Light2D: {fileID: 6498721218378443702}
 --- !u!1 &6209253019330480622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1002,7 +1019,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: -0.30700016}
+  m_ConnectedAnchor: {x: 0, y: -0.3070011}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
