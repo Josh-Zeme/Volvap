@@ -15,8 +15,11 @@ public class UIHandler : MonoBehaviour
             case GameState.Menu:
                 _StartMenuHandler.gameObject.SetActive(true);
                 break;
-            case GameState.TutorialRound:
+            case GameState.TutorialSetup:
                 _StartMenuHandler.gameObject.SetActive(false);
+                break;
+            case GameState.TutorialRound:
+                
                 break;
             default:
                 Debug.Log("Oh yeah show the UI that doesn't exist.. dickhead");

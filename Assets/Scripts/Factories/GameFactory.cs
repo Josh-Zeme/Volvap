@@ -4,6 +4,7 @@ public class GameFactory : MonoBehaviour
 {
     [SerializeField] public SoundFactory SoundFactory;
     [SerializeField] public MusicFactory MusicFactory;
+    [SerializeField] public Card BaseCard;
 
     void Awake()
     {
