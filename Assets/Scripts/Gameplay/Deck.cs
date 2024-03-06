@@ -52,19 +52,21 @@ public class Deck : MonoBehaviour
 
     public void UpdateDeckAmount()
     {
-       
+        var _threeQuarter = (int)(GameSettings.CardsPerDeck * 0.75f);
+        var _half = (int)(GameSettings.CardsPerDeck * 0.5f);
+        var _quarter = (int)(GameSettings.CardsPerDeck * 0.25f);
         //_Animator.SetTrigger("Fill Cards");
-        if (_Cards.Count < GameSettings.CardsPerDeck / 2 && _PreviousCount >= GameSettings.CardsPerDeck / 2)
+        if (_Cards.Count < _threeQuarter && _PreviousCount >= _threeQuarter)
         {
             _Animator.SetTrigger("RemoveCards");
         }
 
-        if (_Cards.Count < GameSettings.CardsPerDeck / 3 && _PreviousCount >= GameSettings.CardsPerDeck / 3)
+        if (_Cards.Count < _half && _PreviousCount >= _half)
         {
             _Animator.SetTrigger("RemoveCards");
         }
 
-        if (_Cards.Count < (GameSettings.CardsPerDeck / 4) && _PreviousCount >= GameSettings.CardsPerDeck / 4)
+        if (_Cards.Count < _quarter && _PreviousCount >= _quarter)
         {
             _Animator.SetTrigger("RemoveCards");
         }

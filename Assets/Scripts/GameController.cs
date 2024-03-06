@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum GameState
 {
-    None = 0, Menu = 1, TutorialSetup = 2, TutorialRound = 3
+    None = 0, Menu = 1, TutorialSetup = 2, TutorialCardSelect = 3, TutorialStart = 4,
 }
 
 public class GameController : MonoBehaviour
@@ -76,7 +76,20 @@ public class GameController : MonoBehaviour
                 _PreGameCamera.Priority = 0;
                 break;
             case GameState.TutorialSetup:
-                GameState = GameState.TutorialRound;
+                GameState = GameState.TutorialCardSelect;
+                break;
+            case GameState.TutorialCardSelect:
+                GameState = GameState.TutorialStart;
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+                _RoofLight.TriggerFlicker(0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+
+                _Clock.TriggerAberration(0.5f, new List<float>() { 0.15f, 0.20f });
+                MockTreats();
                 break;
             default:
                 Debug.Log("How the hell did you get here?");
@@ -117,9 +130,9 @@ public class GameController : MonoBehaviour
     {
         for(int _i = 0; _i < _Units.Count; _i++)
         {
-            var _random = Random.Range(5, 10);
+            var _random = Random.Range(25, 75);
             var _unit = _Units[_i];
-            _unit.AddTreats(50);
+            _unit.AddTreats(_random);
         }
     }
 }

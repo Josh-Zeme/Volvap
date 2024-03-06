@@ -14,7 +14,7 @@ public class CardData
 
     public void Randomise()
     {
-        Debug.Log("Randomise the card values");
+        //Debug.Log("Randomise the card values");
     }
 }
 
