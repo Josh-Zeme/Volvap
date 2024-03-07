@@ -48,6 +48,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SoundFactory: {fileID: 96935819893764517}
   MusicFactory: {fileID: 2950206254009054679}
+  BaseCard: {fileID: 0}
+  RedPlayerCard: {fileID: 21300000, guid: 96d6c847e20e94f43847f505b54c66a7, type: 3}
+  YellowPlayerCard: {fileID: 21300000, guid: 6d19c5b5ae8704d4cb5fd7c62c356bc8, type: 3}
+  BluePlayerCard: {fileID: 21300000, guid: 785a82b54f0210d4389fbc91ca3e840d, type: 3}
+  BlackPlayerCard: {fileID: 21300000, guid: efba1762662d06d40b1535b4ead4341e, type: 3}
+  RedZero: {fileID: 21300000, guid: c527b77ca3fee8343a24cdb3004731ef, type: 3}
+  RedOne: {fileID: 21300000, guid: 031347d2a6597e747974bb8d515f3a40, type: 3}
+  RedTwo: {fileID: 21300000, guid: c2ea58e9d433c0c4b860c9536055fedf, type: 3}
+  RedThree: {fileID: 21300000, guid: 52fd913b8399818419b4caddee53b5af, type: 3}
+  RedFour: {fileID: 21300000, guid: 0ef4d844ffea6bf45a69b1df46e2f0f1, type: 3}
+  RedFive: {fileID: 21300000, guid: 7060e50ff88ce6443ba46e7ed965d3c6, type: 3}
+  RedSix: {fileID: 21300000, guid: 7a7eb9a7ac1db1649b57156dffb5d398, type: 3}
+  RedSeven: {fileID: 21300000, guid: 40890253ae64700448bc021feabe41aa, type: 3}
+  RedEight: {fileID: 21300000, guid: 08f4c5d810da4024c9c63779658a9bc9, type: 3}
+  RedNine: {fileID: 21300000, guid: 68a2a3d08465f244b9dc37d395ea7c8f, type: 3}
+  RedTen: {fileID: 21300000, guid: 34506f81958b11c4e9d08376f10b3fd5, type: 3}
+  BlackZero: {fileID: 21300000, guid: d3d436b3259d6c94892b7d0d06b53a4f, type: 3}
+  BlackOne: {fileID: 21300000, guid: c6b7de65a417bba4f946060412a1e0c3, type: 3}
+  BlackTwo: {fileID: 21300000, guid: 0002e938cd4b5ad4fa96874ed3307ba2, type: 3}
+  BlackThree: {fileID: 21300000, guid: 087fa5cd9cec8114d8c04f8be6b5a72a, type: 3}
+  BlackFour: {fileID: 21300000, guid: 11b2e50c92826f346996a5a52df9ab1d, type: 3}
+  BlackFive: {fileID: 21300000, guid: 5cd008c88a965ae4d833d5fbe78de533, type: 3}
+  BlackSix: {fileID: 21300000, guid: 6bdc5a955e1da2845ba535bc77d14cce, type: 3}
+  BlackSeven: {fileID: 21300000, guid: 39dc8863bac98ef41ac945ec5a120fac, type: 3}
+  BlackEight: {fileID: 21300000, guid: f0650261ed814d447a64b7cdaca3ae94, type: 3}
+  BlackNine: {fileID: 21300000, guid: 1ecc52a0e1cb1a844b3bb396bf5d1924, type: 3}
+  BlackTen: {fileID: 21300000, guid: cb45140a044d5154897f5a39287cb7ed, type: 3}
+  YellowZero: {fileID: 21300000, guid: 37ff1e488cd339643bd44fa2f700cdd6, type: 3}
+  YellowOne: {fileID: 21300000, guid: d6df6ccd9d5de684a97209416feb47f2, type: 3}
+  YellowTwo: {fileID: 21300000, guid: b3b0cc4e2aa628e479e20c60e002e01a, type: 3}
+  YellowThree: {fileID: 21300000, guid: 05b6355db40cb0946a2fbe8cfff52f97, type: 3}
+  YellowFour: {fileID: 21300000, guid: 507a1fabc5014c64e921cda23471111d, type: 3}
+  YellowFive: {fileID: 21300000, guid: 1e361d109856d4d49b6840692ba14149, type: 3}
+  YellowSix: {fileID: 21300000, guid: deea6600de56c3844b35722b34550ebc, type: 3}
+  YellowSeven: {fileID: 21300000, guid: 4d82105620f8ea4438b92d0aee7ee519, type: 3}
+  YellowEight: {fileID: 21300000, guid: 6f653182c6cd3c4478274b86312cfa6a, type: 3}
+  YellowNine: {fileID: 21300000, guid: f1c00e8bb4496f14b99713190a37db89, type: 3}
+  YellowTen: {fileID: 21300000, guid: c53f485c15f71a949bc943b9f3aa6faf, type: 3}
+  BlueZero: {fileID: 21300000, guid: 486c93275bfd21040b3a077db32c80dc, type: 3}
+  BlueOne: {fileID: 21300000, guid: 912b0da5c2d721646b5a5bca5f683a1d, type: 3}
+  BlueTwo: {fileID: 21300000, guid: 2448d6202e6021142a75fe9c8d2bdbd5, type: 3}
+  BlueThree: {fileID: 21300000, guid: 30edca5742d2f264ba2d9dfed729e0eb, type: 3}
+  BlueFour: {fileID: 21300000, guid: 200060423e973704b9418782c133a123, type: 3}
+  BlueFive: {fileID: 21300000, guid: 57433e774bb573d4e9ffca1a92f0340d, type: 3}
+  BlueSix: {fileID: 21300000, guid: e9299a23d652ea24bba7fac4356b4241, type: 3}
+  BlueSeven: {fileID: 21300000, guid: a1ababa4a8348b544bf743ee01fbf993, type: 3}
+  BlueEight: {fileID: 21300000, guid: 3921b1bb0a5abf848b3c2a7153e5db50, type: 3}
+  BlueNine: {fileID: 21300000, guid: f5cfb2293c7227e4980055a64ebb1359, type: 3}
+  BlueTen: {fileID: 21300000, guid: d918745274bcfb64a9ec956ac4faf256, type: 3}
 --- !u!1001 &851630015851045847
 PrefabInstance:
   m_ObjectHideFlags: 0

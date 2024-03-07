@@ -492,6 +492,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 153707702}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!1 &173902745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,7 +1331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.6
+      value: -8.080001
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1847,7 +1857,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.95
+      value: -8.43
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2800,7 +2810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.57
+      value: -8.05
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3212,6 +3222,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 913754615}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!212 &913754615
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3707,7 +3727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.95
+      value: -8.43
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4078,6 +4098,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 1200552193}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!1 &1201367680
 GameObject:
   m_ObjectHideFlags: 0
@@ -4196,6 +4226,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 1201810153}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!212 &1201810153
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4746,6 +4786,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 1400355869}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!1 &1400462705
 GameObject:
   m_ObjectHideFlags: 0
@@ -5399,6 +5449,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 1587886454}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!1 &1638036552
 GameObject:
   m_ObjectHideFlags: 0
@@ -5683,6 +5743,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 1680464553}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!212 &1680464553
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5848,6 +5918,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 1739921463}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!1 &1740807150
 GameObject:
   m_ObjectHideFlags: 0
@@ -6141,6 +6221,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 1851551042}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!212 &1851551042
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6690,6 +6780,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SpriteRenderer: {fileID: 1922713021}
+  _SwordSpriteRenderer: {fileID: 0}
+  _ShieldSpriteRenderer: {fileID: 0}
+  _MagicSpriteRenderer: {fileID: 0}
+  CardData:
+    Owner: {fileID: 0}
+    Sword: 0
+    Shield: 0
+    Magic: 0
+    BoonType: 0
+    Colour: 0
 --- !u!1001 &1969709922
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7058,7 +7158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.95
+      value: -8.43
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7379,7 +7479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.95
+      value: -8.43
       objectReference: {fileID: 0}
     - target: {fileID: 7169622110091571804, guid: dbb6342f21edaaf4eaffd02b4e95743d, type: 3}
       propertyPath: m_LocalPosition.z

@@ -106,7 +106,7 @@ public class GameController : MonoBehaviour
             var _unit = _Units[_i];
             for(int _d = 0; _d < GameSettings.CardsPerPlayer; _d++)
             {
-                _unit.AddCard(_Deck.TakeCard());
+                _unit.AddCard(_Deck.TakeCard(), _unit);
             }
         }
     }

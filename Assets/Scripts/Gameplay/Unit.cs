@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -13,7 +14,7 @@ public class Unit : MonoBehaviour
 
     }
 
-    public virtual void AddCard(CardData cardData)
+    public virtual void AddCard(CardData cardData, Unit owner)
     {
         if (Cards.Count == 0)
         {
@@ -21,14 +22,12 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        for(int i = 0; i < Cards.Count; i++)
+        var _card = Cards.Where(x => x.CardData?.Owner == null).FirstOrDefault();
+        if(_card != null)
         {
-            var _card = Cards[i];
-            if(_card.CardData == null)
-            {
-                _card.CardData = cardData;
-                _card.Show();
-            }
+            cardData.Owner = owner;
+            _card.CardData = cardData;
+            _card.Show();
         }
     }
 
