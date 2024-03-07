@@ -55,21 +55,21 @@ public class CardData
         {
             // Sword Main
             case 0:
-                Sword = UnityEngine.Random.Range(0, 10);
+                Sword = UnityEngine.Random.Range(2, 10);
                 Shield = UnityEngine.Random.Range(0, 5);
                 Magic = UnityEngine.Random.Range(0, 1);
                 break;
             // Shield Main
             case 1:
                 Sword = UnityEngine.Random.Range(0, 5);
-                Shield = UnityEngine.Random.Range(0, 10);
+                Shield = UnityEngine.Random.Range(2, 10);
                 Magic = UnityEngine.Random.Range(0, 1);
                 break;
             // Magic Main
             case 2:
                 Sword = UnityEngine.Random.Range(0, 5);
                 Shield = UnityEngine.Random.Range(0, 5);
-                Magic =  UnityEngine.Random.Range(0, 4);
+                Magic =  UnityEngine.Random.Range(1, 4);
                 break;
             default:
                 Debug.Log("Somehow got a card type that doesn't exist");
