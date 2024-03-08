@@ -19,6 +19,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private RoofLight _RoofLight;
     [SerializeField] private Clock _Clock;
 
+    [SerializeField] private CardHolder _SwordCardHolder;
+    [SerializeField] private CardHolder _ShieldCardHolder;
+    [SerializeField] private CardHolder _MagicCardHolder;
+
     public GameState GameState = GameState.None;
 
 
@@ -79,6 +83,7 @@ public class GameController : MonoBehaviour
                 GameState = GameState.TutorialCardSelect;
                 break;
             case GameState.TutorialCardSelect:
+                ExchangeCards();
                 GameState = GameState.TutorialStart;
                 for (int _i = 0; _i < _Units.Count; _i++)
                 {
@@ -89,7 +94,6 @@ public class GameController : MonoBehaviour
                 _RoofLight.TriggerFlicker(0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
 
                 _Clock.TriggerAberration(0.5f, new List<float>() { 0.15f, 0.20f });
-                MockTreats();
                 break;
             default:
                 Debug.Log("How the hell did you get here?");
@@ -101,14 +105,87 @@ public class GameController : MonoBehaviour
 
     private void DealCards()
     {
+        var _this = this;
         for (int _i = 0; _i < _Units.Count; _i++)
         {
             var _unit = _Units[_i];
-            for(int _d = 0; _d < GameSettings.CardsPerPlayer; _d++)
+            GameSettings.Conductor.PlaySound(GameSound.CardDeal);
+            for (int _d = 0; _d < GameSettings.CardsPerPlayer; _d++)
             {
-                _unit.AddCard(_Deck.TakeCard(), _unit);
+                _unit.AddCard(_Deck.TakeCard(), ref _this);
             }
         }
+    }
+
+    private void ExchangeCards()
+    {
+        switch (GameState)
+        {
+            case GameState.TutorialCardSelect:
+                RotateCardStandard();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void RotateCardStandard()
+    {
+        var _this = this;
+        _Units[0].RandomiseSelected();
+        _Units[1].RandomiseSelected();
+        _Units[2].RandomiseSelected();
+
+        var _playerSelectedCards = _Player.SelectedCards();
+        _Player.RemoveSelectedCards();
+        var _unitZeroSelectedCards = _Units[0].SelectedCards();
+        _Units[0].RemoveSelectedCards();
+        var _unitOneSelectedCards = _Units[1].SelectedCards();
+        _Units[1].RemoveSelectedCards();
+        var _unitTwoSelectedCards = _Units[2].SelectedCards();
+        _Units[2].RemoveSelectedCards();
+
+        for(int _i = 0; _i < _playerSelectedCards.Count; _i++)
+        {
+            var _card = _playerSelectedCards[_i];
+            _Units[0].AddCard(_card, ref _this);
+        }
+
+        for (int _i = 0; _i < _unitZeroSelectedCards.Count; _i++)
+        {
+            var _card = _unitZeroSelectedCards[_i];
+            _Player.AddCard(_card, ref _this);
+        }
+
+        for (int _i = 0; _i < _unitOneSelectedCards.Count; _i++)
+        {
+            var _card = _unitOneSelectedCards[_i];
+            _Units[2].AddCard(_card, ref _this);
+        }
+
+        for (int _i = 0; _i < _unitTwoSelectedCards.Count; _i++)
+        {
+            var _card = _unitTwoSelectedCards[_i];
+            _Units[1].AddCard(_card, ref _this);
+        }
+    }
+
+    public bool IsAllowedToRingBell()
+    {
+        if (GameState == GameState.Menu)
+            return true;
+
+        if(GameState == GameState.TutorialCardSelect && _Player.SelectedCardCount() != 3)
+        {
+            _UIHandler.ShowInsult();
+            //GameSettings.Conductor.PlaySound(GameSound.Grunt);
+            return false;
+        }
+
+        if (GameState == GameState.TutorialCardSelect && _Player.SelectedCardCount() == 3)
+            return true;
+
+        return false;
     }
 
     private void SwapCards()

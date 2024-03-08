@@ -94,3 +94,6 @@ MonoBehaviour:
   _HitBellTwo: {fileID: 8300000, guid: 2d97136254cca1b4bb3c3c25846ce978, type: 3}
   _HitBellThree: {fileID: 8300000, guid: 0a80d0a6c989c5a4894380a060ac62fe, type: 3}
   _HitBellFour: {fileID: 8300000, guid: 5b3a44de6c3c6ca4695e4d54d1a480cf, type: 3}
+  _GruntOne: {fileID: 8300000, guid: 63b50c94d659b0143b84e956abe1de4c, type: 3}
+  _GruntTwo: {fileID: 8300000, guid: 43be0e606da5641469a9a40e5933f479, type: 3}
+  _CardDealOne: {fileID: 8300000, guid: a0765ea6215ef3548aa8d97c37282760, type: 3}

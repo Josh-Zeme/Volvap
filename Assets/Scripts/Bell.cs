@@ -8,7 +8,7 @@ public class Bell : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if(_GameController.GameState == GameState.Menu || _GameController.GameState == GameState.TutorialCardSelect)
+        if (_GameController.IsAllowedToRingBell())
         {
             RingStandard();
             _GameController.TriggerGameState();

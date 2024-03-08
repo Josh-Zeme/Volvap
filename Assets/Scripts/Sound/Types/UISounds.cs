@@ -9,6 +9,13 @@ public class UISounds : MonoBehaviour
     [SerializeField] private AudioClip _HitBellThree;
     [SerializeField] private AudioClip _HitBellFour;
 
+
+    [SerializeField] private AudioClip _GruntOne;
+    [SerializeField] private AudioClip _GruntTwo;
+    
+    [SerializeField] private AudioClip _CardDealOne;
+    
+
     #endregion
 
     public AudioClip GetHitBell()
@@ -20,6 +27,25 @@ public class UISounds : MonoBehaviour
             2 => _HitBellThree,
             3 => _HitBellFour,
             _ => _HitBellOne,
+        };
+    }
+
+    public AudioClip GetGrunt()
+    {
+        var _number = Random.Range(0, 4);
+        return _number switch
+        {
+            1 => _GruntTwo,
+            _ => _GruntOne,
+        };
+    }
+
+    public AudioClip GetCardDeal()
+    {
+        var _number = Random.Range(0, 4);
+        return _number switch
+        {
+            _ => _CardDealOne,
         };
     }
 }

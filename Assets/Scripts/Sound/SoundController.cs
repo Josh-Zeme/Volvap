@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum GameSound
 {
-    None = 0, HitBell = 1
+    None = 0, HitBell = 1, Grunt = 2, CardDeal = 3
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -25,6 +25,12 @@ public class SoundController : MonoBehaviour
         {
             case GameSound.HitBell:
                 _audioClip = GameSettings.GameFactory.SoundFactory.UISounds.GetHitBell();
+                break;
+            case GameSound.Grunt:
+                _audioClip = GameSettings.GameFactory.SoundFactory.UISounds.GetGrunt();
+                break;
+            case GameSound.CardDeal:
+                _audioClip = GameSettings.GameFactory.SoundFactory.UISounds.GetCardDeal();
                 break;
             default:
                 PlayNothing(gameSound);
