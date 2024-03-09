@@ -42,7 +42,6 @@ public class UIHandler : MonoBehaviour
                 _TutorialInstructions.gameObject.SetActive(false);
                 _TutorialStart.gameObject.SetActive(true);
                 TriggerCardHolders(true);
-
                 break;
             default:
                 Debug.Log("Oh yeah show the UI that doesn't exist.. dickhead");

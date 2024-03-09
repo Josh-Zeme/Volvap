@@ -7,6 +7,12 @@ public enum GameState
     None = 0, Menu = 1, TutorialSetup = 2, TutorialCardSelect = 3, TutorialStart = 4,
 }
 
+// This is the state of the current round. Then we can use the "update gamestate at the end of each turn so the turns are easier to sort out and the games are on a loop and logically much easier)
+public enum RoundState
+{
+    None = 0, Draw = 1, Discard = 2, Select = 3, Attack =4
+}
+
 public class GameController : MonoBehaviour
 {
     [SerializeField] private UIHandler _UIHandler;
@@ -24,7 +30,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private CardHolder _MagicCardHolder;
 
     public GameState GameState = GameState.None;
-
 
 
     public void Start()
@@ -95,6 +100,13 @@ public class GameController : MonoBehaviour
 
                 _Clock.TriggerAberration(0.5f, new List<float>() { 0.15f, 0.20f });
                 break;
+            case GameState.TutorialStart:
+                Debug.Log("Do attack round");
+
+                DoAttackPhase();
+
+                Debug.Log("Move to the next phase - real game begins.");
+                break;
             default:
                 Debug.Log("How the hell did you get here?");
                 break;
@@ -117,6 +129,11 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void DrawCards()
+    {
+        Debug.Log("This is similar to deal cards except that it only gives what is missing (which is 3)");
+    }
+
     private void ExchangeCards()
     {
         switch (GameState)
@@ -127,6 +144,30 @@ public class GameController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void DoAttackPhase()
+    {
+        // Similar to this, but for attacking and defending
+        _Units[0].RandomiseSelected();
+        _Units[1].RandomiseSelected();
+        _Units[2].RandomiseSelected();
+
+        // Show cards above head
+
+
+        // Show defence points of all. with multiplier! (Loop through all)
+
+        // Show attack damage and shield breaks etc.
+
+        // add up any damage.
+
+        // throw cards on the table somewhere (there will be a "collection" of cards invisible on the table and they will get populated slowly as the game goes on to make it look like a discard pile!
+        // it will then be reset as the round ends!
+        // Also populated randomly
+
+        // force all to draw their cards again.
+        DrawCards();
     }
 
     public void RotateCardStandard()
@@ -185,7 +226,15 @@ public class GameController : MonoBehaviour
         if (GameState == GameState.TutorialCardSelect && _Player.SelectedCardCount() == 3)
             return true;
 
+        if (GameState == GameState.TutorialStart && IsHoldersFull())
+            return true;
+
         return false;
+    }
+
+    private bool IsHoldersFull()
+    {
+        return _SwordCardHolder.ParentCard != null && _ShieldCardHolder.ParentCard != null && _MagicCardHolder.ParentCard != null;
     }
 
     private void SwapCards()
