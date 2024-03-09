@@ -15,12 +15,17 @@ public enum CardColour
 public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public bool IsSelected = false;
+    public bool IsUsing = false;
+    public bool IsHolderCard = false;
+    [SerializeField] public CardHolder CardHolder;
     [SerializeField] private SpriteRenderer _SpriteRenderer;
     [SerializeField] private SpriteRenderer _SwordSpriteRenderer;
     [SerializeField] private SpriteRenderer _ShieldSpriteRenderer;
     [SerializeField] private SpriteRenderer _MagicSpriteRenderer;
     [SerializeField] private GameObject _Outline;
-
+    [SerializeField] private bool _IsInteractable = false;
+    [SerializeField] private bool _IsDragCard = false;
+    
     private Vector3 _OriginalPosition;
     private Quaternion _OriginalRotation;
     public CardData CardData = null;
@@ -40,6 +45,9 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
 
     public void OnMouseDown()
     {
+        if (!_IsInteractable)
+            return;
+
         if (_GameController.GameState == GameState.TutorialCardSelect)
         {
             SelectCard();
@@ -87,6 +95,13 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
     public void Show()
     {
         PopulateCard();
+        if (_IsInteractable)
+        {
+            _SpriteRenderer.enabled = true;
+            _SwordSpriteRenderer.enabled = true;
+            _ShieldSpriteRenderer.enabled = true;
+            _MagicSpriteRenderer.enabled = true;
+        }
         gameObject.SetActive(true);
     }
 
@@ -99,63 +114,90 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
     {
         if(CardData != null && CardData.Owner is Player)
         {
-            switch (CardData.Colour)
-            {
-                case CardColour.Blue:
-                    _SpriteRenderer.sprite = GameSettings.GameFactory.BluePlayerCard;
-                    break;
-                case CardColour.Black:
-                    _SpriteRenderer.sprite = GameSettings.GameFactory.BlackPlayerCard;
-                    break;
-                case CardColour.Yellow:
-                    _SpriteRenderer.sprite = GameSettings.GameFactory.YellowPlayerCard;
-                    break;
-                case CardColour.Red:
-                    _SpriteRenderer.sprite = GameSettings.GameFactory.RedPlayerCard;
-                    break;
-            }
-            _SwordSpriteRenderer.sprite = GetNumberSprite(CardData.Sword);
-            _ShieldSpriteRenderer.sprite = GetNumberSprite(CardData.Shield);
-            _MagicSpriteRenderer.sprite = GetNumberSprite(CardData.Magic);
+            RawPopulate();
         }
+    }
+
+    public void RawPopulate()
+    {
+        if (CardData == null)
+            return;
+
+        switch (CardData.Colour)
+        {
+            case CardColour.Blue:
+                _SpriteRenderer.sprite = GameSettings.GameFactory.BluePlayerCard;
+                break;
+            case CardColour.Black:
+                _SpriteRenderer.sprite = GameSettings.GameFactory.BlackPlayerCard;
+                break;
+            case CardColour.Yellow:
+                _SpriteRenderer.sprite = GameSettings.GameFactory.YellowPlayerCard;
+                break;
+            case CardColour.Red:
+                _SpriteRenderer.sprite = GameSettings.GameFactory.RedPlayerCard;
+                break;
+        }
+        _SwordSpriteRenderer.sprite = GetNumberSprite(CardData.Sword);
+        _ShieldSpriteRenderer.sprite = GetNumberSprite(CardData.Shield);
+        _MagicSpriteRenderer.sprite = GetNumberSprite(CardData.Magic);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!_IsInteractable)
+            return;
         // MUST be implemented for the other two to work
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (_GameController.GameState == GameState.TutorialStart)
-        {
-            Debug.Log("On Drag Start!");
-        }
-        //if (_IsDisabled)
-        //    return;
+        if (!_IsInteractable)
+            return;
 
-        //ItemDrag.Instance.Show(this);
-        //_Thumbnail.enabled = false;
-        //Parent.PickUpShowIcon();
-        //StackSizeBox.gameObject.SetActive(false);
+        if (_GameController.GameState == GameState.TutorialStart && !IsUsing)
+        {
+            _SpriteRenderer.enabled = false;
+            _SwordSpriteRenderer.enabled = false;
+            _ShieldSpriteRenderer.enabled = false;
+            _MagicSpriteRenderer.enabled = false;
+            var _this = this;
+            CardDrag.Instance.Show(ref _this);
+        }
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_GameController.GameState == GameState.TutorialStart)
+        if (!_IsInteractable)
+            return;
+
+        if (!IsUsing)
         {
-            Debug.Log("On Drag End!");
+            _SpriteRenderer.enabled = true;
+            _SwordSpriteRenderer.enabled = true;
+            _ShieldSpriteRenderer.enabled = true;
+            _MagicSpriteRenderer.enabled = true;
         }
-        //ItemDrag.Instance.Hide();
-        //_Thumbnail.enabled = true;
-        //Parent.RefreshIcon();
-        //StackSizeBox.gameObject.SetActive(InventoryItem.Amount > 1);
+
+        if (IsHolderCard)
+        {
+            var _isHolding = eventData.pointerDrag.GetComponent<CardHolder>();
+            if (_isHolding == null)
+            {
+                CardHolder.ParentCard.Show();
+                CardHolder.ParentCard.IsUsing = false;
+                CardHolder.ParentCard = null;
+                Hide();
+
+            }
+        }
+        CardDrag.Instance.Hide();
     }
 
     public Sprite GetNumberSprite(int number)
     {
         // I know.. this method is absolutely dogshit attrocious... ignore it.
         // i couldn't be bothered messing with it in another way.. i just went blunt force approach cause im lazy
-        if (CardData != null && CardData.Owner is Player)
+        if ((CardData != null && CardData.Owner is Player) || (CardData != null && _IsDragCard))
         {
             switch (CardData.Colour)
             {
