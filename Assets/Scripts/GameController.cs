@@ -4,13 +4,13 @@ using UnityEngine;
 
 public enum GameState
 {
-    None = 0, Menu = 1, TutorialSetup = 2, TutorialCardSelect = 3, TutorialStart = 4,
+    None = 0, Menu = 1, TutorialRound = 2, FirstRound = 3
 }
 
 // This is the state of the current round. Then we can use the "update gamestate at the end of each turn so the turns are easier to sort out and the games are on a loop and logically much easier)
 public enum RoundState
 {
-    None = 0, Draw = 1, Discard = 2, Select = 3, Attack =4
+    None = 0, Draw = 1, Exchange = 2, Select = 3, Attack =4
 }
 
 public class GameController : MonoBehaviour
@@ -30,7 +30,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private CardHolder _MagicCardHolder;
 
     public GameState GameState = GameState.None;
-
+    public RoundState RoundState = RoundState.None;
+    public int Round = 0;
 
     public void Start()
     {
@@ -43,9 +44,10 @@ public class GameController : MonoBehaviour
     {
         switch (GameState)
         {
-            case GameState.TutorialSetup:
-                if (!_RoofLight.IsFlickering)
+            case GameState.TutorialRound:
+                if (!_RoofLight.IsFlickering && RoundState == RoundState.None)
                 {
+                    RoundState = RoundState.Draw;
                     _Clock.TriggerDrool();
                     for (int _i = 0; _i < _Units.Count; _i++)
                     {
@@ -69,7 +71,8 @@ public class GameController : MonoBehaviour
                 GameState = GameState.Menu;
                 break;
             case GameState.Menu:
-                GameState = GameState.TutorialSetup;
+                GameState = GameState.TutorialRound;
+                RoundState = RoundState.None;
                 //MockTreats();
                 // trigger clock move
                 for (int _i = 0; _i < _Units.Count; _i++)
@@ -84,12 +87,29 @@ public class GameController : MonoBehaviour
                 _InGameCamera.Priority = 1;
                 _PreGameCamera.Priority = 0;
                 break;
-            case GameState.TutorialSetup:
-                GameState = GameState.TutorialCardSelect;
+            case GameState.TutorialRound:
+                TriggerRoundState();
                 break;
-            case GameState.TutorialCardSelect:
+            default:
+                Debug.Log("How the hell did you get here?");
+                break;
+        }
+        // fade the text rather than disable it.
+        _UIHandler.TriggerGameState(GameState, RoundState);
+    }
+
+    public void TriggerRoundState()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+                RoundState = RoundState.Exchange;
+                break;
+            case RoundState.Exchange:
                 ExchangeCards();
-                GameState = GameState.TutorialStart;
+                RoundState = RoundState.Select;
                 for (int _i = 0; _i < _Units.Count; _i++)
                 {
                     //Should stop all units from smoking
@@ -100,21 +120,17 @@ public class GameController : MonoBehaviour
 
                 _Clock.TriggerAberration(0.5f, new List<float>() { 0.15f, 0.20f });
                 break;
-            case GameState.TutorialStart:
+            case RoundState.Select:
                 Debug.Log("Do attack round");
                 // clock logic - https://www.youtube.com/watch?v=oWEiYuVkVOw
                 // may need to animate it though to do it properly. as in. we need a fixed update over time to get it to the time we want.
                 // that means i can force the clock to be FUCKKKY
                 DoAttackPhase();
-
                 Debug.Log("Move to the next phase - real game begins.");
                 break;
-            default:
-                Debug.Log("How the hell did you get here?");
+            case RoundState.Attack:
                 break;
         }
-        // fade the text rather than disable it.
-        _UIHandler.TriggerGameState(GameState);
     }
 
     public int GetMultiplier(CardHolderType holderType, CardColour colour, bool isIterate)
@@ -185,9 +201,9 @@ public class GameController : MonoBehaviour
 
     private void ExchangeCards()
     {
-        switch (GameState)
+        switch (RoundState)
         {
-            case GameState.TutorialCardSelect:
+            case RoundState.Exchange:
                 RotateCardStandard();
                 break;
             default:
@@ -265,17 +281,20 @@ public class GameController : MonoBehaviour
         if (GameState == GameState.Menu)
             return true;
 
-        if(GameState == GameState.TutorialCardSelect && _Player.SelectedCardCount() != 3)
+        if(RoundState == RoundState.Exchange && GameState == GameState.TutorialRound && _Player.SelectedCardCount() != 3)
         {
             _UIHandler.ShowInsult();
-            //GameSettings.Conductor.PlaySound(GameSound.Grunt);
+        }
+
+        if (RoundState == RoundState.Exchange && _Player.SelectedCardCount() != 3)
+        {
             return false;
         }
 
-        if (GameState == GameState.TutorialCardSelect && _Player.SelectedCardCount() == 3)
+        if (RoundState == RoundState.Exchange && _Player.SelectedCardCount() == 3)
             return true;
 
-        if (GameState == GameState.TutorialStart && IsHoldersFull())
+        if (RoundState == RoundState.Select && IsHoldersFull())
             return true;
 
         return false;

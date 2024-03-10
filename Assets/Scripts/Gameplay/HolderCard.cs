@@ -33,7 +33,7 @@ public class HolderCard : Card
         if (!_IsInteractable)
             return;
 
-        if (_GameController.GameState == GameState.TutorialStart && !IsUsing)
+        if (_GameController.RoundState == RoundState.Select && !IsUsing)
         {
             _SpriteRenderer.enabled = false;
             _BigNumber.enabled = false;

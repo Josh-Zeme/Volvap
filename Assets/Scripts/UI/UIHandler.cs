@@ -12,7 +12,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private CardHolder _ShieldCardHolder;
     [SerializeField] private CardHolder _MagicCardHolder;
 
-    public void TriggerGameState(GameState gameState)
+    public void TriggerGameState(GameState gameState, RoundState roundState)
     {
         switch (gameState)
         {
@@ -27,21 +27,29 @@ public class UIHandler : MonoBehaviour
                 _TutorialStart.gameObject.SetActive(false);
                 TriggerCardHolders(false);
                 break;
-            case GameState.TutorialSetup:
-                _StartMenuHandler.gameObject.SetActive(false);
-                _TutorialInstructions.gameObject.SetActive(false);
-                _TutorialStart.gameObject.SetActive(false);
-                TriggerCardHolders(false);
-                break;
-            case GameState.TutorialCardSelect:
-                _TutorialInstructions.gameObject.SetActive(true);
-                _TutorialStart.gameObject.SetActive(false);
-                TriggerCardHolders(false);
-                break;
-            case GameState.TutorialStart:
-                _TutorialInstructions.gameObject.SetActive(false);
-                _TutorialStart.gameObject.SetActive(true);
-                TriggerCardHolders(true);
+            case GameState.TutorialRound:
+                switch (roundState)
+                {
+                    case RoundState.None:
+                        _StartMenuHandler.gameObject.SetActive(false);
+                        _TutorialInstructions.gameObject.SetActive(false);
+                        _TutorialStart.gameObject.SetActive(false);
+                        TriggerCardHolders(false);
+                        break;
+                    case RoundState.Exchange:
+                        _TutorialInstructions.gameObject.SetActive(true);
+                        _TutorialStart.gameObject.SetActive(false);
+                        TriggerCardHolders(false);
+                        break;
+                    case RoundState.Select:
+                        _TutorialInstructions.gameObject.SetActive(false);
+                        _TutorialStart.gameObject.SetActive(true);
+                        TriggerCardHolders(true);
+                        break;
+                    case RoundState.Attack:
+
+                        break;
+                }
                 break;
             default:
                 Debug.Log("Oh yeah show the UI that doesn't exist.. dickhead");

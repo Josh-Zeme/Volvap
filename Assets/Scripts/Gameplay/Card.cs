@@ -49,9 +49,9 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         if (!_IsInteractable)
             return;
 
-        if (_GameController.GameState == GameState.TutorialCardSelect)
+        if (_GameController.RoundState == RoundState.Exchange)
         {
-            SelectCard();
+            ExchangeSelectCard();
         }
     }
 
@@ -69,7 +69,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         CardData.BoonType = CardBoonType.None;
     }
 
-    public void SelectCard()
+    public void ExchangeSelectCard()
     {
         if (IsSelected)
         {
@@ -156,7 +156,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         if (!_IsInteractable)
             return;
 
-        if (_GameController.GameState == GameState.TutorialStart && !IsUsing)
+        if (_GameController.RoundState == RoundState.Select && !IsUsing)
         {
             _SpriteRenderer.enabled = false;
             _SwordSpriteRenderer.enabled = false;

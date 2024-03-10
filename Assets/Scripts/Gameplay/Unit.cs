@@ -89,9 +89,9 @@ public class Unit : MonoBehaviour
             _randomCardThree = Random.Range(0, Cards.Count);
         } while (_randomCardOne == _randomCardThree || _randomCardTwo == _randomCardThree);
 
-        Cards[_randomCardOne].SelectCard();
-        Cards[_randomCardTwo].SelectCard();
-        Cards[_randomCardThree].SelectCard();
+        Cards[_randomCardOne].ExchangeSelectCard();
+        Cards[_randomCardTwo].ExchangeSelectCard();
+        Cards[_randomCardThree].ExchangeSelectCard();
     }
 
     public void RemoveSelectedCards()
