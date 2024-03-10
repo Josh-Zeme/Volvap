@@ -102,7 +102,9 @@ public class GameController : MonoBehaviour
                 break;
             case GameState.TutorialStart:
                 Debug.Log("Do attack round");
-
+                // clock logic - https://www.youtube.com/watch?v=oWEiYuVkVOw
+                // may need to animate it though to do it properly. as in. we need a fixed update over time to get it to the time we want.
+                // that means i can force the clock to be FUCKKKY
                 DoAttackPhase();
 
                 Debug.Log("Move to the next phase - real game begins.");
@@ -113,6 +115,53 @@ public class GameController : MonoBehaviour
         }
         // fade the text rather than disable it.
         _UIHandler.TriggerGameState(GameState);
+    }
+
+    public int GetMultiplier(CardHolderType holderType, CardColour colour, bool isIterate)
+    {
+        var _multiplier = 1;
+
+        switch (holderType)
+        {
+            case CardHolderType.Sword:
+                if (_MagicCardHolder.CardColour != null && _MagicCardHolder.CardColour.Value == colour)
+                    _multiplier++;
+                if (_ShieldCardHolder.CardColour != null && _ShieldCardHolder.CardColour.Value == colour)
+                    _multiplier++;
+
+                if (isIterate)
+                {
+                    _MagicCardHolder.RefreshMultipler();
+                    _ShieldCardHolder.RefreshMultipler();
+                }
+                break;
+            case CardHolderType.Shield:
+                if (_MagicCardHolder.CardColour != null && _MagicCardHolder.CardColour.Value == colour)
+                    _multiplier++;
+                if (_SwordCardHolder.CardColour != null && _SwordCardHolder.CardColour.Value == colour)
+                    _multiplier++;
+
+                if (isIterate)
+                {
+                    _MagicCardHolder.RefreshMultipler();
+                    _SwordCardHolder.RefreshMultipler();
+                }
+                break;
+            case CardHolderType.Magic:
+                if (_SwordCardHolder.CardColour != null && _SwordCardHolder.CardColour.Value == colour)
+                    _multiplier++;
+                if (_ShieldCardHolder.CardColour != null && _ShieldCardHolder.CardColour.Value == colour)
+                    _multiplier++;
+
+                if (isIterate)
+                {
+                    _SwordCardHolder.RefreshMultipler();
+                    _ShieldCardHolder.RefreshMultipler();
+                }
+                break;
+        }
+
+        return _multiplier;
     }
 
     private void DealCards()

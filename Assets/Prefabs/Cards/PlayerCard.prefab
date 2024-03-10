@@ -387,6 +387,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsSelected: 0
+  IsUsing: 0
+  _IsHolderCard: 0
+  CardHolder: {fileID: 0}
   _SpriteRenderer: {fileID: 4782165462480779943}
   _SwordSpriteRenderer: {fileID: 6592969526735775927}
   _ShieldSpriteRenderer: {fileID: 5596596197917721819}
@@ -485,7 +488,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.012415886, y: 1.681292}
+  m_Offset: {x: -0.012415886, y: 1.806622}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -496,5 +499,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.8270226, y: 2.8659554}
+  m_Size: {x: 1.8270226, y: 2.782402}
   m_EdgeRadius: 0

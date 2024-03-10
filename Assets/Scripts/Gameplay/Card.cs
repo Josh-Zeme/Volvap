@@ -12,24 +12,25 @@ public enum CardColour
     Red = 0, Blue = 1, Yellow = 2, Black = 3
 }
 
-public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHandler
+public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
 {
     public bool IsSelected = false;
     public bool IsUsing = false;
-    public bool IsHolderCard = false;
+    public bool _IsHolderCard = false;
+
     [SerializeField] public CardHolder CardHolder;
-    [SerializeField] private SpriteRenderer _SpriteRenderer;
-    [SerializeField] private SpriteRenderer _SwordSpriteRenderer;
-    [SerializeField] private SpriteRenderer _ShieldSpriteRenderer;
-    [SerializeField] private SpriteRenderer _MagicSpriteRenderer;
-    [SerializeField] private GameObject _Outline;
-    [SerializeField] private bool _IsInteractable = false;
-    [SerializeField] private bool _IsDragCard = false;
-    
-    private Vector3 _OriginalPosition;
-    private Quaternion _OriginalRotation;
+    [SerializeField] protected SpriteRenderer _SpriteRenderer;
+    [SerializeField] protected SpriteRenderer _SwordSpriteRenderer;
+    [SerializeField] protected SpriteRenderer _ShieldSpriteRenderer;
+    [SerializeField] protected SpriteRenderer _MagicSpriteRenderer;
+    [SerializeField] protected GameObject _Outline;
+    [SerializeField] protected bool _IsInteractable = false;
+    [SerializeField] protected bool _IsDragCard = false;
+
+    protected Vector3 _OriginalPosition;
+    protected Quaternion _OriginalRotation;
     public CardData CardData = null;
-    private GameController _GameController;
+    protected GameController _GameController;
 
     public void Start()
     {
@@ -118,7 +119,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         }
     }
 
-    public void RawPopulate()
+    public virtual void RawPopulate()
     {
         if (CardData == null)
             return;
@@ -150,7 +151,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         // MUST be implemented for the other two to work
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public virtual void OnBeginDrag(PointerEventData eventData)
     {
         if (!_IsInteractable)
             return;
@@ -165,7 +166,16 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
             CardDrag.Instance.Show(ref _this);
         }
     }
-    public void OnEndDrag(PointerEventData eventData)
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if(CardHolder != null)
+        {
+            CardHolder.OnDrop(eventData);
+        }
+    }
+
+    public virtual void OnEndDrag(PointerEventData eventData)
     {
         if (!_IsInteractable)
             return;
@@ -178,7 +188,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
             _MagicSpriteRenderer.enabled = true;
         }
 
-        if (IsHolderCard)
+        if (_IsHolderCard)
         {
             var _isHolding = eventData.pointerDrag.GetComponent<CardHolder>();
             if (_isHolding == null)
@@ -193,11 +203,16 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         CardDrag.Instance.Hide();
     }
 
+    public virtual void SetMultiplier(int multiplier)
+    {
+
+    }
+
     public Sprite GetNumberSprite(int number)
     {
         // I know.. this method is absolutely dogshit attrocious... ignore it.
         // i couldn't be bothered messing with it in another way.. i just went blunt force approach cause im lazy
-        if ((CardData != null && CardData.Owner is Player) || (CardData != null && _IsDragCard))
+        if ((CardData != null && CardData.Owner is Player) || (CardData != null && _IsDragCard) || (CardData != null && _IsHolderCard))
         {
             switch (CardData.Colour)
             {

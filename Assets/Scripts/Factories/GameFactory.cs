@@ -58,6 +58,35 @@ public class GameFactory : MonoBehaviour
     [SerializeField] public Sprite BlueNine;
     [SerializeField] public Sprite BlueTen;
 
+    [SerializeField] public Sprite BlueSword;
+    [SerializeField] public Sprite RedSword;
+    [SerializeField] public Sprite BlackSword;
+    [SerializeField] public Sprite YellowSword;
+
+
+    [SerializeField] public Sprite BlueShield;
+    [SerializeField] public Sprite RedShield;
+    [SerializeField] public Sprite BlackShield;
+    [SerializeField] public Sprite YellowShield;
+
+    [SerializeField] public Sprite BlueMagic;
+    [SerializeField] public Sprite RedMagic;
+    [SerializeField] public Sprite BlackMagic;
+    [SerializeField] public Sprite YellowMagic;
+
+    [SerializeField] public Sprite BlueTwoTimes;
+    [SerializeField] public Sprite BlueThreeTimes;
+
+    [SerializeField] public Sprite YellowTwoTimes;
+    [SerializeField] public Sprite YellowThreeTimes;
+
+    [SerializeField] public Sprite BlackTwoTimes;
+    [SerializeField] public Sprite BlackThreeTimes;
+
+    [SerializeField] public Sprite RedTwoTimes;
+    [SerializeField] public Sprite RedThreeTimes;
+
+
     void Awake()
     {
         GameFactory[] objs = FindObjectsOfType<GameFactory>();
