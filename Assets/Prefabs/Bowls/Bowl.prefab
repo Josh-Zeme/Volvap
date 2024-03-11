@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8484994847729356087}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4343625593317490187}
   - component: {fileID: 3743307340764977059}
   - component: {fileID: 3526078233051172019}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Table catch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 7696258415603879310}
   - component: {fileID: 3922115856763854074}
   - component: {fileID: 7971323271595779869}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bowl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 52
+  m_SortingOrder: 101
   m_Sprite: {fileID: 662021918482746533, guid: f8b5acc8c2f473246885838525d369ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -326,11 +326,11 @@ PolygonCollider2D:
       - {x: -0.5126233, y: 0.86069334}
       - {x: -0.82920265, y: 1.001178}
       - {x: -0.9856987, y: 1.3819895}
-      - {x: -1.2256575, y: 2.0726962}
+      - {x: -1.1748171, y: 1.4371924}
       - {x: -1.21875, y: 0.1875}
       - {x: -1.09375, y: 0}
       - {x: 1.21875, y: 0}
-      - {x: 1.224627, y: 1.9661065}
+      - {x: 1.2373371, y: 1.3433129}
       - {x: 1.0174928, y: 1.206811}
       - {x: 0.9432173, y: 1.01042}
   m_UseDelaunayMesh: 0

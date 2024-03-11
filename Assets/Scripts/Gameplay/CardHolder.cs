@@ -16,11 +16,25 @@ public class CardHolder : MonoBehaviour, IDropHandler
     public Card ParentCard;
     public CardColour? CardColour => ParentCard?.CardData?.Colour;
 
+    public void ClearCard()
+    {
+        ParentCard.IsUsing = false;
+        ParentCard = null;
+        Card.Hide();
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag != null)
         {
             var _card = eventData.pointerDrag.GetComponent<Card>();
+
+            if (_card == Card)
+            {
+                // It just needs to exit out early cause is being dragged onto itself
+                return;
+            }
+
             var _cardData = new CardData()
             {
                 Colour = _card.CardData.Colour,
@@ -32,7 +46,7 @@ public class CardHolder : MonoBehaviour, IDropHandler
 
             
 
-            if (_card._IsHolderCard)
+            if (_card.IsHolderCard)
             {
                 // Dragging from one holder to another!
                 var _parentCardA = _card.CardHolder.ParentCard;
@@ -60,7 +74,7 @@ public class CardHolder : MonoBehaviour, IDropHandler
                 ParentCard = null;
             }
 
-            if (!_card._IsHolderCard)
+            if (!_card.IsHolderCard)
             {
                 _card.Hide();
                 ParentCard = _card;

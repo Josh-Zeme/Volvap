@@ -11,12 +11,7 @@ public class Deck : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < GameSettings.CardsPerDeck; i++)
-        {
-            var _card = new CardData();
-            _card.Randomise();
-            _Cards.Add(_card);
-        }
+        RefillDeck();
         Debug.Log($"There are {_Cards.Count} cards");
         _PreviousCount = _Cards.Count;
     }
@@ -35,19 +30,15 @@ public class Deck : MonoBehaviour
         return _card;
     }
 
-    public void Shuffle()
+    public void RefillDeck()
     {
-
-    }
-
-    public void AddCard()
-    {
-
-    }
-
-    public void GetTopCard()
-    {
-
+        while(_Cards.Count < GameSettings.CardsPerDeck)
+        {
+            var _card = new CardData();
+            _card.Randomise();
+            _Cards.Add(_card);
+        }
+        _PreviousCount = _Cards.Count;
     }
 
     public void UpdateDeckAmount()

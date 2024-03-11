@@ -8,6 +8,12 @@ public class HolderCard : Card
     [SerializeField] private SpriteRenderer _BigNumber;
     [SerializeField] private SpriteRenderer _Multiplier;
 
+    protected override void Start()
+    {
+        base.Start();
+        IsHolderCard = true;
+    }
+
     public override void RawPopulate()
     {
         if (CardData == null)
@@ -55,7 +61,7 @@ public class HolderCard : Card
             _Multiplier.enabled = true;
         }
 
-        if (_IsHolderCard)
+        if (IsHolderCard)
         {
             var _isHolding = eventData.pointerDrag.GetComponent<CardHolder>();
             if (_isHolding == null && CardHolder.ParentCard != null)

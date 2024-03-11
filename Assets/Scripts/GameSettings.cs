@@ -1,3 +1,4 @@
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public static class GameSettings
@@ -9,6 +10,16 @@ public static class GameSettings
 
     public static float SoundVolume = 0.25f;
     public static float MusicVolume = 0.10f;
+
+    #endregion
+
+    #region TimeRegion
+
+    public static int HoursInDay = 24;
+    public static int MinutesInHour = 60;
+    public static float HoursToDegrees = 360 / 12;
+    public static float MinutesToDegrees = 360 / 60;
+    public static float DayDuration = 9000f;
 
     #endregion
 

@@ -16,7 +16,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
 {
     public bool IsSelected = false;
     public bool IsUsing = false;
-    public bool _IsHolderCard = false;
+    public bool IsHolderCard = false;
 
     [SerializeField] public CardHolder CardHolder;
     [SerializeField] protected SpriteRenderer _SpriteRenderer;
@@ -32,7 +32,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
     public CardData CardData = null;
     protected GameController _GameController;
 
-    public void Start()
+    protected virtual void Start()
     {
         _OriginalPosition = transform.position;
         _OriginalRotation = transform.rotation;
@@ -93,7 +93,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         }
     }
 
-    public void Show()
+    public virtual void Show()
     {
         PopulateCard();
         if (_IsInteractable)
@@ -111,9 +111,9 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         gameObject.SetActive(false);
     }
 
-    public void PopulateCard()
+    public virtual void PopulateCard()
     {
-        if(CardData != null && CardData.Owner is Player)
+        if(CardData != null)
         {
             RawPopulate();
         }
@@ -188,7 +188,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
             _MagicSpriteRenderer.enabled = true;
         }
 
-        if (_IsHolderCard)
+        if (IsHolderCard)
         {
             var _isHolding = eventData.pointerDrag.GetComponent<CardHolder>();
             if (_isHolding == null)
@@ -205,14 +205,14 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
 
     public virtual void SetMultiplier(int multiplier)
     {
-
+        CardData.Multiplier = multiplier;
     }
 
     public Sprite GetNumberSprite(int number)
     {
         // I know.. this method is absolutely dogshit attrocious... ignore it.
-        // i couldn't be bothered messing with it in another way.. i just went blunt force approach cause im lazy
-        if ((CardData != null && CardData.Owner is Player) || (CardData != null && _IsDragCard) || (CardData != null && _IsHolderCard))
+        // i couldn't be bothered messing with it in another way.. i just went blunt force approach cause im lazy (Font didn't have numbers.. could look for more.. but hey.. that's effort?
+        if ((CardData != null) || (CardData != null && _IsDragCard) || (CardData != null && IsHolderCard))
         {
             switch (CardData.Colour)
             {
@@ -343,6 +343,7 @@ public class CardData
     public int Sword;
     public int Shield;
     public int Magic;
+    public int Multiplier;
     public CardBoonType BoonType; // Not Decided if i'll use this. the rest should be fine though
     public CardColour Colour;
 
@@ -401,5 +402,33 @@ public class CardData
                 Debug.Log("Somehow got a card type that doesn't exist");
                 break;
         }
+    }
+
+    public void CalculateMultiplier(CardColour cardA, CardColour cardB)
+    {
+        if (cardA == Colour && cardB == Colour)
+        {
+            Multiplier = 3;
+            return;
+        }
+
+        if (cardA == Colour || cardB == Colour)
+        {
+            Multiplier = 2;
+            return;
+        }
+
+        Multiplier = 1;
+    }
+
+    public void Clear()
+    {
+        Owner = null;
+        Sword = 0;
+        Shield = 0;
+        Magic = 0;
+        Multiplier = 0;
+        BoonType = CardBoonType.None;
+        Colour = CardColour.Black;
     }
 }

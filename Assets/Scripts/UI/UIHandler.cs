@@ -5,54 +5,118 @@ using UnityEngine;
 public class UIHandler : MonoBehaviour
 {
     [SerializeField] private StartMenuHandler _StartMenuHandler;
+
+    #region Tutorial Instructions
+
     [SerializeField] private GameObject _TutorialInstructions;
     [SerializeField] private GameObject _TutorialInstructionInsult;
     [SerializeField] private GameObject _TutorialStart;
+    [SerializeField] private GameObject _TutorialPlaceCard;
+    [SerializeField] private GameObject _TutorialDisplay;
+    [SerializeField] private GameObject _TutorialSword;
+    [SerializeField] private GameObject _TutorialMagic;
+    [SerializeField] private GameObject _TutorialEnd;
+
+    #endregion
+
+
     [SerializeField] private CardHolder _SwordCardHolder;
     [SerializeField] private CardHolder _ShieldCardHolder;
     [SerializeField] private CardHolder _MagicCardHolder;
 
-    public void TriggerGameState(GameState gameState, RoundState roundState)
+    public void TriggerGameState(GameState gameState, RoundState roundState, AttackPhase attackPhase)
     {
+        DisableAllElements();
         switch (gameState)
         {
             case GameState.None:
-                _TutorialInstructions.gameObject.SetActive(false);
-                _TutorialStart.gameObject.SetActive(false);
-                TriggerCardHolders(false);
                 break;
             case GameState.Menu:
                 _StartMenuHandler.gameObject.SetActive(true);
-                _TutorialInstructions.gameObject.SetActive(false);
-                _TutorialStart.gameObject.SetActive(false);
-                TriggerCardHolders(false);
                 break;
             case GameState.TutorialRound:
                 switch (roundState)
                 {
                     case RoundState.None:
-                        _StartMenuHandler.gameObject.SetActive(false);
-                        _TutorialInstructions.gameObject.SetActive(false);
-                        _TutorialStart.gameObject.SetActive(false);
-                        TriggerCardHolders(false);
                         break;
                     case RoundState.Exchange:
                         _TutorialInstructions.gameObject.SetActive(true);
-                        _TutorialStart.gameObject.SetActive(false);
-                        TriggerCardHolders(false);
                         break;
                     case RoundState.Select:
-                        _TutorialInstructions.gameObject.SetActive(false);
                         _TutorialStart.gameObject.SetActive(true);
                         TriggerCardHolders(true);
                         break;
                     case RoundState.Attack:
+                        switch (attackPhase)
+                        {
+                            case AttackPhase.None:
+                                break;
+                            case AttackPhase.Setup:
+                                break;
+                            case AttackPhase.PlaceCard:
+                                _TutorialPlaceCard.gameObject.SetActive(true);
+                                break;
+                            case AttackPhase.Display:
+                                _TutorialDisplay.gameObject.SetActive(true);
+                                break;
+                            case AttackPhase.SwordAttack:
+                                _TutorialSword.gameObject.SetActive(true);
+                                break;
+                            case AttackPhase.MagicAttack:
+                                _TutorialMagic.gameObject.SetActive(true);
+                                break;
+                            case AttackPhase.RandomiseCards:
+                                _TutorialEnd.gameObject.SetActive(true);
+                                break;
+                            case AttackPhase.CleanupUnits:
+                                _TutorialEnd.gameObject.SetActive(true);
+                                break;
+                            case AttackPhase.DrawCards:
+                                _TutorialEnd.gameObject.SetActive(true);
+                                break;
+                        }
 
                         break;
                 }
                 break;
             default:
-                Debug.Log("Oh yeah show the UI that doesn't exist.. dickhead");
+                switch (roundState)
+                {
+                    case RoundState.Select:
+                        TriggerCardHolders(true);
+                        break;
+                    case RoundState.Attack:
+                        switch (attackPhase)
+                        {
+                            case AttackPhase.None:
+                                break;
+                            case AttackPhase.Setup:
+                                break;
+                            case AttackPhase.PlaceCard:
+                                
+                                break;
+                            case AttackPhase.Display:
+                                
+                                break;
+                            case AttackPhase.SwordAttack:
+                                
+                                break;
+                            case AttackPhase.MagicAttack:
+                                
+                                break;
+                            case AttackPhase.RandomiseCards:
+                                
+                                break;
+                            case AttackPhase.CleanupUnits:
+                                
+                                break;
+                            case AttackPhase.DrawCards:
+                                
+                                break;
+                        }
+
+                        break;
+                }
                 break;
         }
     }
@@ -64,6 +128,17 @@ public class UIHandler : MonoBehaviour
         _MagicCardHolder.gameObject.SetActive(isVisible);
     }
 
+    public void DisableAllElements() {
+        _StartMenuHandler.gameObject.SetActive(false);
+        _TutorialInstructions.gameObject.SetActive(false);
+        _TutorialStart.gameObject.SetActive(false);
+        _TutorialPlaceCard.gameObject.SetActive(false);
+        _TutorialDisplay.gameObject.SetActive(false);
+        _TutorialSword.gameObject.SetActive(false);
+        _TutorialMagic.gameObject.SetActive(false);
+        _TutorialEnd.gameObject.SetActive(false);
+        TriggerCardHolders(false);
+    }
 
     public void ShowInsult()
     {

@@ -129,7 +129,7 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 22
-      height: 14
+      height: 18
     spriteID: 36a19bdbb7d3d34439c5b65f9a51bc6c
     spriteBone: []
     spriteOutline: []
@@ -154,7 +154,7 @@ ScriptedImporter:
         x: 0
         y: 0
         width: 22
-        height: 14
+        height: 18
       spriteId: 36a19bdbb7d3d34439c5b65f9a51bc6c
     linkedCells: []
     parentIndex: -1
@@ -197,4 +197,4 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 22, y: 14}
+  canvasSize: {x: 22, y: 18}
