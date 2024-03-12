@@ -69,6 +69,19 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         CardData.BoonType = CardBoonType.None;
     }
 
+    public void PlayerReset()
+    {
+        IsSelected = false;
+        if (_Outline != null)
+        {
+            _Outline.SetActive(IsSelected);
+        }
+        CardData.Sword = 0;
+        CardData.Shield = 0;
+        CardData.Magic = 0;
+        CardData.BoonType = CardBoonType.None;
+    }
+
     public void ExchangeSelectCard()
     {
         if (IsSelected)
@@ -424,6 +437,16 @@ public class CardData
     public void Clear()
     {
         Owner = null;
+        Sword = 0;
+        Shield = 0;
+        Magic = 0;
+        Multiplier = 0;
+        BoonType = CardBoonType.None;
+        Colour = CardColour.Black;
+    }
+
+    public void ClearKeepOwner()
+    {
         Sword = 0;
         Shield = 0;
         Magic = 0;

@@ -52,4 +52,9 @@ public class Aberration : MonoBehaviour
         _SpriteRenderer.enabled = _IsFlickered;
         _IsFlickered = !_IsFlickered;
     }
+
+    public void Reset()
+    {
+        Debug.Log("Resetting Aberration");
+    }
 }

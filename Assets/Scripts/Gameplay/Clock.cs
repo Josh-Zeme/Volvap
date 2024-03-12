@@ -28,7 +28,7 @@ public class Clock : MonoBehaviour
         _TotalTime += Time.deltaTime * _TimeSpeed;
         _CurrentTime = _TotalTime % GameSettings.DayDuration;
 
-        if(_TargetTime < _TotalTime)
+        if((_TargetTime < _TotalTime && _TimeSpeed > 0) || (_TargetTime > _TotalTime && _TimeSpeed < 0))
         {
             IsWaiting = false;
             _TimeSpeed = _BaseTimeSpeed;

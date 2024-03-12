@@ -20,6 +20,7 @@ public class RoofLight : MonoBehaviour
     public void Start()
     {
         _InitialIntensity = _Light2D.intensity;
+        _OriginalColor = _Light2D.color;
     }
 
     public void FixedUpdate()
@@ -33,6 +34,7 @@ public class RoofLight : MonoBehaviour
                 _Light2D.intensity = _InitialIntensity;
                 _IsFlickered = false;
                 _FlickerIntervals.Clear();
+                _Light2D.color = _OriginalColor;
             } else if(_FlickerIntervals.Any() && _FlickerTimeRemaining > _FlickerIntervals.First())
             {
                 _FlickerIntervals.RemoveAt(0);
@@ -46,8 +48,10 @@ public class RoofLight : MonoBehaviour
         _Rigidbody2D.AddForce(force);
     }
 
-    public void TriggerFlicker(float flickerLength, List<float> flickerIntervals)
+    public void TriggerFlicker(Color flickerColour, float flickerLength, List<float> flickerIntervals)
     {
+        _FlickerColor = flickerColour;
+        _Light2D.color = _FlickerColor;
         _FlickerIntervals = flickerIntervals;
         IsFlickering = true;
         _FlickerTimeRemaining = 0;
@@ -58,10 +62,5 @@ public class RoofLight : MonoBehaviour
     {
         _Light2D.intensity = _IsFlickered ? 0 : _InitialIntensity;
         _IsFlickered = !_IsFlickered;
-    }
-
-    public void TriggerLightChange()
-    {
-        
     }
 }

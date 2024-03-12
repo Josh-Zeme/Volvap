@@ -16,10 +16,21 @@ public class Unit : MonoBehaviour
     public int Shield;
     public int Magic;
     public int Treats;
+    public bool IsDead = false;
+    public bool IsBall = false;
+    public bool IsChicken = false;
+    [SerializeField] private SpriteRenderer _Ball;
+
+    [SerializeField] private SpriteRenderer _Chicken;
+    [SerializeField] private SpriteRenderer _DeadImage;
 
     protected virtual void Start()
     {
+        if (_Chicken != null)
+            _Chicken.enabled = false;
 
+        if (_Ball != null)
+            _Ball.enabled = false;
     }
 
     public int SelectedCardCount()
@@ -42,6 +53,17 @@ public class Unit : MonoBehaviour
             _card.Generate(cardData, ref gameController);
             _card.Show();
         }
+    }
+
+    public virtual void DiscardAllCards()
+    {
+        for (int _i = 0; _i < Cards.Count; _i++)
+        {
+            var _card = Cards[_i];
+            _card.CardData.ClearKeepOwner();
+            _card.Hide();
+        }
+        AttackCards.Clear();
     }
 
     public virtual void DiscardAfterAttack()
@@ -231,7 +253,7 @@ public class Unit : MonoBehaviour
         _Bowl.DestroyTreats();
     }
 
-    public void ClearCard(Card card)
+    public virtual void ClearCard(Card card)
     {
         card.Hide();
         card.Reset();
@@ -246,5 +268,37 @@ public class Unit : MonoBehaviour
             ClearCard(_card);
         }
         
+    }
+
+    public void TriggerBall(bool isEnabled)
+    {
+        _Ball.enabled = isEnabled;
+        IsBall = isEnabled;
+    }
+
+    public void TriggerChicken(bool isEnabled)
+    {
+        _Chicken.enabled = isEnabled;
+        IsChicken = isEnabled;
+    }
+
+    public void Kill()
+    {
+        Debug.Log("Killing this unit");
+        TriggerChicken(false);
+        TriggerBall(false);
+        DiscardAllCards();
+        RemoveSelectedCards();
+        IsDead = true;
+    }
+
+    public void Reset()
+    {
+        Debug.Log("Resetting unit");
+        IsDead = false;
+        TriggerChicken(false);
+        TriggerBall(false);
+        DiscardAllCards();
+        RemoveSelectedCards();
     }
 }

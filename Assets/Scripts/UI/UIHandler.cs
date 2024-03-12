@@ -16,6 +16,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameObject _TutorialSword;
     [SerializeField] private GameObject _TutorialMagic;
     [SerializeField] private GameObject _TutorialEnd;
+    [SerializeField] private GameObject _YouLoseTryAgain;
 
     #endregion
 
@@ -30,11 +31,14 @@ public class UIHandler : MonoBehaviour
         switch (gameState)
         {
             case GameState.None:
+                _YouLoseTryAgain.gameObject.SetActive(false);
                 break;
             case GameState.Menu:
                 _StartMenuHandler.gameObject.SetActive(true);
+                _YouLoseTryAgain.gameObject.SetActive(false);
                 break;
             case GameState.TutorialRound:
+                _YouLoseTryAgain.gameObject.SetActive(false);
                 switch (roundState)
                 {
                     case RoundState.None:
@@ -86,6 +90,7 @@ public class UIHandler : MonoBehaviour
                         TriggerCardHolders(true);
                         break;
                     case RoundState.Attack:
+                        _YouLoseTryAgain.gameObject.SetActive(false);
                         switch (attackPhase)
                         {
                             case AttackPhase.None:
@@ -138,6 +143,11 @@ public class UIHandler : MonoBehaviour
         _TutorialMagic.gameObject.SetActive(false);
         _TutorialEnd.gameObject.SetActive(false);
         TriggerCardHolders(false);
+    }
+
+    public void EnableGameOver()
+    {
+        _YouLoseTryAgain.gameObject.SetActive(true);
     }
 
     public void ShowInsult()
