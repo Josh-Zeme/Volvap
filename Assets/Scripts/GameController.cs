@@ -90,14 +90,19 @@ public class GameController : MonoBehaviour
                             TriggerRoundState();
                         }
                     break;
-                    case RoundState.Attack:
-                        DoAttackPhase();
-                    break;
                 }
                 break;
             case GameState.FirstRoundA:
                 break;
             default:
+                break;
+        }
+
+        // Just so that it always does the attack state rather than shitting itself
+        switch (RoundState)
+        {
+            case RoundState.Attack:
+                DoAttackPhase();
                 break;
         }
     }

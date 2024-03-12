@@ -20,6 +20,7 @@ public class CardHolder : MonoBehaviour, IDropHandler
     {
         ParentCard.IsUsing = false;
         ParentCard = null;
+        _CardHolderTopper.gameObject.SetActive(ParentCard != null);
         Card.Hide();
     }
 

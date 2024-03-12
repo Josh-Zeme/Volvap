@@ -121,15 +121,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Clock
     originalName: 
-    pivot: {x: 0.5, y: -0.00330033}
+    pivot: {x: 0.81249994, y: -0.82407403}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 96
-      height: 303
+      width: 32
+      height: 108
     spriteID: a964a94e9e8ad3d4da4af82d19673b56
     spriteBone: []
     spriteOutline: []
@@ -139,86 +139,6 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: Clock_Frame_1
-    originalName: 
-    pivot: {x: 0.5, y: -0.00330033}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 315
-      width: 96
-      height: 303
-    spriteID: 3b29d8060b75a9448a9ee38c4eccdbc4
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 315}
-  - name: Clock_Frame_2
-    originalName: 
-    pivot: {x: 0.5, y: -0.00330033}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 626
-      width: 96
-      height: 303
-    spriteID: a9f6aef39b3d9d14aac7ed968981953f
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 626}
-  - name: Clock_Frame_3
-    originalName: 
-    pivot: {x: 0.5, y: -0.00330033}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 108
-      y: 4
-      width: 96
-      height: 303
-    spriteID: d359621b362a76d4dbd2bd407470ef42
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 108, y: 4}
-  - name: Clock_Frame_4
-    originalName: 
-    pivot: {x: 0.5, y: -0.00330033}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 108
-      y: 315
-      width: 96
-      height: 303
-    spriteID: 59ca3295f9961ee4db467ec1e824bdac
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 108, y: 315}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -228,46 +148,14 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
-    - name: Clock_Frame_0
+    - name: Clock
       frameIndex: 0
       cellRect:
-        x: 0
-        y: 1
-        width: 96
-        height: 303
+        x: 22
+        y: 89
+        width: 32
+        height: 108
       spriteId: a964a94e9e8ad3d4da4af82d19673b56
-    - name: Clock_Frame_1
-      frameIndex: 1
-      cellRect:
-        x: 0
-        y: 1
-        width: 96
-        height: 303
-      spriteId: 3b29d8060b75a9448a9ee38c4eccdbc4
-    - name: Clock_Frame_2
-      frameIndex: 2
-      cellRect:
-        x: 0
-        y: 1
-        width: 96
-        height: 303
-      spriteId: a9f6aef39b3d9d14aac7ed968981953f
-    - name: Clock_Frame_3
-      frameIndex: 3
-      cellRect:
-        x: 0
-        y: 1
-        width: 96
-        height: 303
-      spriteId: d359621b362a76d4dbd2bd407470ef42
-    - name: Clock_Frame_4
-      frameIndex: 4
-      cellRect:
-        x: 0
-        y: 1
-        width: 96
-        height: 303
-      spriteId: 59ca3295f9961ee4db467ec1e824bdac
     linkedCells: []
     parentIndex: -1
   platformSettings:

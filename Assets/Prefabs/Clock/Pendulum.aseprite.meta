@@ -1,0 +1,360 @@
+fileFormatVersion: 2
+guid: 3d0c6a2b50cbd2b4e922f511494c6601
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  previousAsepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  asepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  textureAssetName: 
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  animatedSpriteImportData:
+  - name: Pendulum_Frame_0
+    originalName: 
+    pivot: {x: 0.81249994, y: -0.82407403}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 133
+      y: 4
+      width: 32
+      height: 108
+    spriteID: 85eade64c91361b418a6b97c29afab9b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 133, y: 4}
+  - name: Pendulum_Frame_1
+    originalName: 
+    pivot: {x: 0.54545456, y: -0.8411215}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 92
+      y: 120
+      width: 33
+      height: 107
+    spriteID: 2c1940ca4a7a1e6469b537a5a95f7d6d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 92, y: 120}
+  - name: Pendulum_Frame_2
+    originalName: 
+    pivot: {x: 0.3333333, y: -0.8584905}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 39
+      height: 106
+    spriteID: 7ee6307a9bde62a40a71462d0dbea039
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: Pendulum_Frame_3
+    originalName: 
+    pivot: {x: 0.54545456, y: -0.82407403}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 51
+      y: 4
+      width: 33
+      height: 108
+    spriteID: d8eed8e8425b0964ebb312509e12a66b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 51, y: 4}
+  - name: Pendulum_Frame_4
+    originalName: 
+    pivot: {x: 0.81249994, y: -0.82407403}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 133
+      y: 120
+      width: 32
+      height: 108
+    spriteID: fe9a295b0ebd2484090ca556afb72383
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 133, y: 120}
+  - name: Pendulum_Frame_5
+    originalName: 
+    pivot: {x: 1.060606, y: -0.82407403}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 51
+      y: 120
+      width: 33
+      height: 108
+    spriteID: 66d2ee5c11f01bf43be9bd54b299f5e9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 51, y: 120}
+  - name: Pendulum_Frame_6
+    originalName: 
+    pivot: {x: 1.2, y: -0.8584905}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 118
+      width: 35
+      height: 106
+    spriteID: 9555e1cbc0943cb44aaa76d2dcec983a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 118}
+  - name: Pendulum_Frame_7
+    originalName: 
+    pivot: {x: 1.060606, y: -0.82407403}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 92
+      y: 4
+      width: 33
+      height: 108
+    spriteID: ec93075d8322ea04ea239fd988821892
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 92, y: 4}
+  spriteSheetImportData: []
+  asepriteLayers:
+  - layerIndex: 0
+    guid: -217198940
+    name: Pendulum
+    layerFlags: 0
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: Pendulum_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 22
+        y: 89
+        width: 32
+        height: 108
+      spriteId: 85eade64c91361b418a6b97c29afab9b
+    - name: Pendulum_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 30
+        y: 90
+        width: 33
+        height: 107
+      spriteId: 2c1940ca4a7a1e6469b537a5a95f7d6d
+    - name: Pendulum_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 35
+        y: 91
+        width: 39
+        height: 106
+      spriteId: 7ee6307a9bde62a40a71462d0dbea039
+    - name: Pendulum_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 30
+        y: 89
+        width: 33
+        height: 108
+      spriteId: d8eed8e8425b0964ebb312509e12a66b
+    - name: Pendulum_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 22
+        y: 89
+        width: 32
+        height: 108
+      spriteId: fe9a295b0ebd2484090ca556afb72383
+    - name: Pendulum_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 13
+        y: 89
+        width: 33
+        height: 108
+      spriteId: 66d2ee5c11f01bf43be9bd54b299f5e9
+    - name: Pendulum_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 6
+        y: 91
+        width: 35
+        height: 106
+      spriteId: 9555e1cbc0943cb44aaa76d2dcec983a
+    - name: Pendulum_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 13
+        y: 89
+        width: 33
+        height: 108
+      spriteId: ec93075d8322ea04ea239fd988821892
+    linkedCells: []
+    parentIndex: -1
+  platformSettings: []
+  secondarySpriteTextures: []
+  spritePackingTag: 
+  canvasSize: {x: 96, y: 304}

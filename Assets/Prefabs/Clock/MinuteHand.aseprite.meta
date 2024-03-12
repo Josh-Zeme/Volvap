@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f1175441b93d98a489519858ceac1523
+guid: 3fd48ffbd633b114cacc12807f1de971
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638457953764460349
+  platformSettingsDirtyTick: 638458781896990939
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -128,9 +128,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 4
-      height: 15
-    spriteID: 2927cb64fcd539f4f93d5976fda90724
+      width: 6
+      height: 28
+    spriteID: 48945161da1ecb946b586e2e4af278c0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,9 +153,9 @@ ScriptedImporter:
       cellRect:
         x: 0
         y: 0
-        width: 4
-        height: 15
-      spriteId: 2927cb64fcd539f4f93d5976fda90724
+        width: 6
+        height: 28
+      spriteId: 48945161da1ecb946b586e2e4af278c0
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -197,4 +197,4 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 4, y: 15}
+  canvasSize: {x: 6, y: 28}
