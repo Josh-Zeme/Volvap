@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public enum GameState
 {
@@ -28,6 +29,8 @@ public enum AttackPhase
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] private Light2D _GlobalLight;
+    [SerializeField] private Bell _Bell;
     [SerializeField] private UIHandler _UIHandler;
     [SerializeField] private CinemachineVirtualCamera _PreGameCamera;
     [SerializeField] private CinemachineVirtualCamera _InGameCamera;
@@ -57,12 +60,19 @@ public class GameController : MonoBehaviour
     // this may need to be a method rather than a variable.
     // see if flicker, see if aberation moving, see if attacking etc!
     private bool _IsGameOver;
+    private bool _IsGameWon;
+    private bool _IsGameWonMid;
 
     public GameState GameState = GameState.None;
     public RoundState RoundState = RoundState.None;
     public AttackPhase AttackPhase = AttackPhase.None;
     public int Round = 0;
     private int _CurrentRandomCard = 0;
+
+    private float _TimeWinMidGameStart = 5f;
+    private float _TimeWinMidGameRemaining = 0;
+    private float _TimeWinStartGameStart = 2.5f;
+    private float _TimeWinStartGameRemaining = 0;
 
     public void Start()
     {
@@ -78,6 +88,35 @@ public class GameController : MonoBehaviour
 
         if (_IsGameOver)
             FinishGameOver();
+
+        if (_IsGameWon)
+        {
+            _TimeWinStartGameRemaining += Time.deltaTime;
+            var _intensity = (_TimeWinStartGameRemaining / _TimeWinStartGameStart) * (GameSettings.WinGameGlobalLight - GameSettings.BaseGlobalLight);
+            _GlobalLight.intensity = _intensity;
+            if ( _TimeWinStartGameRemaining >= _TimeWinStartGameStart)
+            {
+                _TimeWinStartGameRemaining = 0f;
+                _IsGameWon = false;
+                MidpointWinGame();
+            }
+            return;
+        }
+
+
+        if (_IsGameWonMid)
+        {
+            _TimeWinMidGameRemaining -= Time.deltaTime;
+            var _intensity = (_TimeWinMidGameRemaining / _TimeWinMidGameStart) * (GameSettings.WinGameGlobalLight - GameSettings.BaseGlobalLight);
+            _GlobalLight.intensity = _intensity;
+            if (_TimeWinMidGameRemaining <= 0)
+            {
+                _TimeWinMidGameRemaining = _TimeWinMidGameStart;
+                _IsGameWonMid = false;
+                FinishedWinGame();
+            }
+            return;
+        }
 
         switch (GameState)
         {
@@ -234,6 +273,7 @@ public class GameController : MonoBehaviour
     public void AttackPhaseOver()
     {
         // BOSS TESTING
+
         //if (GameState == GameState.TutorialRound)
         //{
         //    _Units[0].Kill();
@@ -354,7 +394,7 @@ public class GameController : MonoBehaviour
 
     public void InitiateBoss()
     {
-        _Clock.UpdateBaseTimeSpeed(40);
+        _Clock.UpdateBaseTimeSpeed(120);
         _RoofLight.TriggerBossFight();
         _AberrationNpc.gameObject.gameObject.SetActive(true);
         DealCards();
@@ -531,7 +571,11 @@ public class GameController : MonoBehaviour
                     CalculateNextDead();
                 } else if (GameState == GameState.BossRoundC)
                 {
-                    CalculateBossDead();
+                    var _isDead = CalculateBossDead();
+                    if (_isDead)
+                    {
+                        return;
+                    }
                 }
             break;
             case AttackPhase.RandomiseCards:
@@ -973,8 +1017,53 @@ public class GameController : MonoBehaviour
 
     private void WinGame()
     {
+        GameState = GameState.EndGame;
+        _IsGameWon = true;
+        _AberrationNpc.Reset();
+        _AberrationNpc.gameObject.gameObject.SetActive(false);
+        _Player.RemoveSelectedCards();
+        _Player.CompleteHideCards();
+        _RoofLight.Reset();
+        _Bell.gameObject.SetActive(false);
+        ForceHideDisplay();
+        HideCardsOnTable();
+        _UIHandler.DisableAllElements();
+    }
+
+    private void MidpointWinGame()
+    {
+        _TimeWinMidGameRemaining = _TimeWinMidGameStart;
+        Debug.Log("Say Good Boy");
+        _CurrentRandomCard = 0;
+        _UIHandler.EnableGoodBoy();
+        GameSettings.Conductor.PlaySound(GameSound.HitBell);
         _Clock.Reset();
-        Debug.Log("Congrats you won lol");
+        _IsGameWonMid = true;
+    }
+
+    private void FinishedWinGame()
+    {
+        for (int _i = 0; _i < RandomDisplayCards.Count; _i++)
+        {
+            RandomDisplayCards[_i].Reset();
+            RandomDisplayCards[_i].Hide();
+        }
+        _Player.Reset();
+        for (int _i = 0; _i < _Units.Count; _i++)
+        {
+            var _unit = _Units[_i];
+            _unit.Reset();
+        }
+
+        if (_Aberration != null)
+        {
+            _Aberration.Reset();
+        }
+        _Bell.gameObject.SetActive(true);
+        AttackPhase = AttackPhase.None;
+        RoundState = RoundState.None;
+        GameState = GameState.Menu;
+        _UIHandler.TriggerGameState(GameState, RoundState, AttackPhase);
     }
 
     private void FinishGameOver() {
@@ -1008,15 +1097,17 @@ public class GameController : MonoBehaviour
         _UIHandler.EnableGameOver();
     }
 
-    private void CalculateBossDead()
+    private bool CalculateBossDead()
     {
         if (_Player.Treats > _AberrationNpc.Treats)
         {
             StartGameOver();
+            return false;
         }
         else
         {
             WinGame();
+            return true;
         }
     }
 

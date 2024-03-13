@@ -62,6 +62,7 @@ public class RoofLight : MonoBehaviour
     public void Reset()
     {
         _IsBossFight = false;
+        _Light2D.color = _OriginalColour;
     }
 
     public void TriggerForce(Vector2 force)

@@ -22,7 +22,6 @@ public class AberrationNpc : Unit
         _TurnValuesDisplay.UpdateMagic(Magic);
     }
 
-
     public override void RandomiseAttackSelect()
     {
         // Same as other method, needs less random logic later (harder enemies)

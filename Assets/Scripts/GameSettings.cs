@@ -19,7 +19,7 @@ public static class GameSettings
     public static float BaseRoofLight = 0.56f;
     public static float TutorialGlobalLight = 0f;
     public static float TutorialRoofLight = 0.1f;
-
+    public static float WinGameGlobalLight = 2500f;
 
     #endregion
 

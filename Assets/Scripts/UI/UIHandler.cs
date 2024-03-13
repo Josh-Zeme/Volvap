@@ -20,6 +20,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private GameObject _TutorialMagic;
     [SerializeField] private GameObject _TutorialEnd;
     [SerializeField] private GameObject _YouLoseTryAgain;
+    [SerializeField] private GameObject _GoodBoy;
 
     #endregion
 
@@ -40,6 +41,8 @@ public class UIHandler : MonoBehaviour
         DisableAllElements();
         switch (gameState)
         {
+            case GameState.EndGame:
+                break;
             case GameState.None:
                 _RoofLight.SetIntensity(GameSettings.TutorialRoofLight);
                 _Bell.MakeUnlit();
@@ -56,7 +59,7 @@ public class UIHandler : MonoBehaviour
             case GameState.TutorialRound:
                 _GlobalLight.intensity = GameSettings.TutorialGlobalLight;
                 _RoofLight.SetIntensity(GameSettings.TutorialRoofLight);
-                _Bell.MakeUnlit();
+                
                 _YouLoseTryAgain.gameObject.SetActive(false);
                 switch (roundState)
                 {
@@ -64,12 +67,15 @@ public class UIHandler : MonoBehaviour
                         break;
                     case RoundState.Exchange:
                         _TutorialInstructions.gameObject.SetActive(true);
+                        _Bell.MakeUnlit();
                         break;
                     case RoundState.Select:
                         _TutorialStart.gameObject.SetActive(true);
+                        _Bell.MakeUnlit();
                         TriggerCardHolders(true);
                         break;
                     case RoundState.Attack:
+                        _Bell.MakeLit();
                         switch (attackPhase)
                         {
                             case AttackPhase.None:
@@ -161,6 +167,7 @@ public class UIHandler : MonoBehaviour
 
     public void DisableAllElements() {
         _GamePlaySelect.gameObject.SetActive(false);
+        _GoodBoy.gameObject.SetActive(false);
         _GamePlayDrag.gameObject.SetActive(false);
         _StartMenuHandler.gameObject.SetActive(false);
         _TutorialInstructions.gameObject.SetActive(false);
@@ -176,6 +183,11 @@ public class UIHandler : MonoBehaviour
     public void EnableGameOver()
     {
         _YouLoseTryAgain.gameObject.SetActive(true);
+    }
+
+    public void EnableGoodBoy()
+    {
+        _GoodBoy.gameObject.SetActive(true);
     }
 
     public void ShowTutorialInsult()

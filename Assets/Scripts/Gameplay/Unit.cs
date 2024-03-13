@@ -279,6 +279,14 @@ public class Unit : MonoBehaviour
         _Bowl.DestroyTreats();
     }
 
+    public void CompleteHideCards()
+    {
+        for(int _i =  0; _i < Cards.Count; _i++) { 
+            var _card = Cards[_i];
+            _card.gameObject.SetActive(false);
+        }
+    }
+
     public virtual void ClearCard(Card card)
     {
         card.Hide();
@@ -324,7 +332,7 @@ public class Unit : MonoBehaviour
         IsDead = true;
     }
 
-    public void Reset()
+    public virtual void Reset()
     {
         // Some of these don't exist on the player so no need to hide them
         if(_MainSprite != null)
