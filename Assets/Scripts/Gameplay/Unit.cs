@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     public List<Card> Cards = new List<Card>();
     [SerializeField] private Pipe _Pipe;
     [SerializeField] private Bowl _Bowl;
-    [SerializeField] private TurnValuesDisplay _TurnValuesDisplay;
+    [SerializeField] protected TurnValuesDisplay _TurnValuesDisplay;
     [SerializeField] private SwordAttack _SwordAttack;
     public List<CardData> AttackCards = new List<CardData>();
     public int Sword;
@@ -170,7 +170,7 @@ public class Unit : MonoBehaviour
         AttackCards.Add(_cardData);
     }
 
-    public void RandomiseAttackSelect()
+    public virtual void RandomiseAttackSelect()
     {
         // Same as other method, needs less random logic later (harder enemies)
         var _randomCardOne = Random.Range(0, Cards.Count);
@@ -229,7 +229,7 @@ public class Unit : MonoBehaviour
         _TurnValuesDisplay.ForcedHide();
     }
 
-    public void CalculateValues()
+    public virtual void CalculateValues()
     {
         if (IsDead)
             return;
@@ -293,7 +293,6 @@ public class Unit : MonoBehaviour
             var _card = _cards[_i];
             ClearCard(_card);
         }
-        
     }
 
     public void TriggerBall(bool isEnabled)
@@ -311,9 +310,10 @@ public class Unit : MonoBehaviour
     public void Kill()
     {
         _MainSprite.enabled = false;
-        _LeftArmSprite.enabled = false;
-        _RightArmSprite.enabled = false;
-        Debug.Log("Killing this unit");
+        if(_LeftArmSprite != null)
+            _LeftArmSprite.enabled = false;
+        if (_RightArmSprite != null)
+            _RightArmSprite.enabled = false;
         TriggerChicken(false);
         TriggerBall(false);
         DiscardAllCards();
@@ -326,11 +326,13 @@ public class Unit : MonoBehaviour
 
     public void Reset()
     {
-        _MainSprite.enabled = true;
-        _LeftArmSprite.enabled = true;
-        _RightArmSprite.enabled = true;
-        Debug.Log("Resetting unit");
-        Debug.Log("hide Dead sprite");
+        // Some of these don't exist on the player so no need to hide them
+        if(_MainSprite != null)
+            _MainSprite.enabled = true;
+        if (_LeftArmSprite != null)
+            _LeftArmSprite.enabled = true;
+        if (_RightArmSprite != null)
+            _RightArmSprite.enabled = true;
         IsDead = false;
         TriggerChicken(false);
         TriggerBall(false);

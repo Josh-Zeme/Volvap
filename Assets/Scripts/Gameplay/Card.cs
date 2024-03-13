@@ -17,6 +17,7 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
     public bool IsSelected = false;
     public bool IsUsing = false;
     public bool IsHolderCard = false;
+    public bool IsSwappingHolder = false;
 
     [SerializeField] public CardHolder CardHolder;
     [SerializeField] protected SpriteRenderer _SpriteRenderer;
@@ -112,14 +113,17 @@ public class Card : MonoBehaviour,  IBeginDragHandler, IEndDragHandler, IDragHan
         if (_IsInteractable)
         {
             _SpriteRenderer.enabled = true;
-            _SwordSpriteRenderer.enabled = true;
-            _ShieldSpriteRenderer.enabled = true;
-            _MagicSpriteRenderer.enabled = true;
+            if(_SwordSpriteRenderer != null)
+                _SwordSpriteRenderer.enabled = true;
+            if (_ShieldSpriteRenderer != null)
+                _ShieldSpriteRenderer.enabled = true;
+            if (_MagicSpriteRenderer != null)
+                _MagicSpriteRenderer.enabled = true;
         }
         gameObject.SetActive(true);
     }
 
-    public void Hide()
+    public virtual void Hide()
     {
         gameObject.SetActive(false);
     }

@@ -885,10 +885,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a90d4500043bba49b8426079ab77c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _OriginalColor: {r: 0, g: 0, b: 0, a: 0}
-  _FlickerColor: {r: 0, g: 0, b: 0, a: 0}
+  _OriginalColour: {r: 1, g: 1, b: 1, a: 0}
+  _BossColour: {r: 0.7372549, g: 0.2901961, b: 0.36862746, a: 1}
+  _FlickerColour: {r: 0, g: 0, b: 0, a: 0}
   _Rigidbody2D: {fileID: 4029405621737158153}
   _Light2D: {fileID: 6498721218378443702}
+  IsFlickering: 0
 --- !u!1 &6209253019330480622
 GameObject:
   m_ObjectHideFlags: 0

@@ -76,4 +76,14 @@ public class Clock : MonoBehaviour
             _Drool.TriggerDrool();
         }
     }
+
+    public void UpdateBaseTimeSpeed(int baseTimeSpeed)
+    {
+        _BaseTimeSpeed = baseTimeSpeed;
+    }
+
+    public void Reset()
+    {
+        _BaseTimeSpeed = 1;
+    }
 }

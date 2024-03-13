@@ -20,8 +20,8 @@ public class CardHolder : MonoBehaviour, IDropHandler
     {
         ParentCard.IsUsing = false;
         ParentCard = null;
-        _CardHolderTopper.gameObject.SetActive(ParentCard != null);
-        Card.Hide();
+        RefreshTopper();
+        Card.gameObject.SetActive(false);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -50,23 +50,36 @@ public class CardHolder : MonoBehaviour, IDropHandler
             if (_card.IsHolderCard)
             {
                 // Dragging from one holder to another!
+                _card.IsSwappingHolder = true;
                 var _parentCardA = _card.CardHolder.ParentCard;
-                var _parentCardB = ParentCard;
-                var _cardDataB = new CardData()
-                {
-                    Colour = ParentCard.CardData.Colour,
-                    Shield = ParentCard.CardData.Shield,
-                    Sword = ParentCard.CardData.Sword,
-                    Magic = ParentCard.CardData.Magic,
-                    BoonType = ParentCard.CardData.BoonType
-                };
+                Card _parentCardB = null;
+                CardData _cardDataB = null;
+                if (ParentCard != null) { 
+                    _parentCardB = ParentCard;
+                    _cardDataB = new CardData()
+                    {
+                        Colour = ParentCard.CardData.Colour,
+                        Shield = ParentCard.CardData.Shield,
+                        Sword = ParentCard.CardData.Sword,
+                        Magic = ParentCard.CardData.Magic,
+                        BoonType = ParentCard.CardData.BoonType
+                    };
+                }
                 ParentCard = _parentCardA;
-                _card.CardHolder.ParentCard = _parentCardB;
 
-                _card.Generate(_cardDataB, ref _GameController);
-                _card.RawPopulate();
-                _card.gameObject.SetActive(true);
-                _card.Show();
+                if(_cardDataB == null)
+                {
+                    _card.CardHolder.ClearCard();
+                }
+                else
+                {
+                    _card.CardHolder.ParentCard = _parentCardB;
+                    _card.Generate(_cardDataB, ref _GameController);
+                    _card.RawPopulate();
+                    _card.gameObject.SetActive(true);
+                    _card.Show();
+                    _card.CardHolder.RefreshTopper();
+                }
             }
             else if (ParentCard != null)
             {
@@ -87,15 +100,21 @@ public class CardHolder : MonoBehaviour, IDropHandler
             
             Card.gameObject.SetActive(true);
 
-            _CardHolderTopper.gameObject.SetActive(ParentCard != null);
+            RefreshTopper();
 
-            if(ParentCard != null)
-            {
-                _CardHolderTopper.GenerateTopper(Card.CardData.Colour);
-            }
+
             var _cardMultiplier = _GameController.GetMultiplier(Type, _cardData.Colour, true);
             Card.SetMultiplier(_cardMultiplier);
             CardDrag.Instance.Hide();
+        }
+    }
+
+    public void RefreshTopper()
+    {
+        _CardHolderTopper.gameObject.SetActive(ParentCard != null);
+        if (ParentCard != null)
+        {
+            _CardHolderTopper.GenerateTopper(Card.CardData.Colour);
         }
     }
 

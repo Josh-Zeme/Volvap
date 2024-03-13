@@ -121,15 +121,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: UnitBrokenShield
     originalName: 
-    pivot: {x: 0.5294118, y: 0}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 34
-      height: 36
+      width: 36
+      height: 38
     spriteID: 84c64786b5d6c774caa7fc1e0ce86e2d
     spriteBone: []
     spriteOutline: []
@@ -153,8 +153,8 @@ ScriptedImporter:
       cellRect:
         x: 0
         y: 0
-        width: 34
-        height: 36
+        width: 36
+        height: 38
       spriteId: 84c64786b5d6c774caa7fc1e0ce86e2d
     linkedCells: []
     parentIndex: -1
@@ -197,4 +197,4 @@ ScriptedImporter:
     androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 36, y: 36}
+  canvasSize: {x: 36, y: 38}

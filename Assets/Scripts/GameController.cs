@@ -33,6 +33,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera _InGameCamera;
 
     [SerializeField] private Aberration _Aberration;
+    [SerializeField] private AberrationNpc _AberrationNpc;
     [SerializeField] private Player _Player;
     [SerializeField] private List<Unit> _Units;
     [SerializeField] private Deck _Deck;
@@ -44,6 +45,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private CardHolder _MagicCardHolder;
 
     [SerializeField] private List<DisplayCard> PlayerDisplayCards;
+    [SerializeField] private List<DisplayCard> AberrationDisplayCards;
     [SerializeField] private List<DisplayCard> Npc1DisplayCards;
     [SerializeField] private List<DisplayCard> Npc2DisplayCards;
     [SerializeField] private List<DisplayCard> Npc3DisplayCards;
@@ -97,8 +99,6 @@ public class GameController : MonoBehaviour
                         }
                         break;
                 }
-                break;
-            case GameState.FirstRoundA:
                 break;
             default:
                 break;
@@ -196,7 +196,7 @@ public class GameController : MonoBehaviour
                 RoundState = RoundState.Draw;
                 break;
             case RoundState.Draw:
-                if(_Units.Any(x=> x.IsChicken))
+                if(_Units.Any(x=> x.IsChicken && !x.IsDead))
                 {
                     RoundState = RoundState.Exchange;
                 }
@@ -233,6 +233,21 @@ public class GameController : MonoBehaviour
 
     public void AttackPhaseOver()
     {
+        // BOSS TESTING
+        //if (GameState == GameState.TutorialRound)
+        //{
+        //    _Units[0].Kill();
+        //    _Units[1].Kill();
+        //    _Units[2].Kill();
+
+        //    //TODO Remove
+
+        //    AttackPhase = AttackPhase.None;
+        //    RoundState = RoundState.Exchange;
+        //    GameState = GameState.BossRoundA;
+        //    InitiateBoss();
+        //    EndRound();
+        //}
         if (GameState == GameState.TutorialRound)
         {
             EndRound();
@@ -273,7 +288,8 @@ public class GameController : MonoBehaviour
         else if (GameState == GameState.SecondRoundB)
         {
             AttackPhase = AttackPhase.None;
-            RoundState = RoundState.Exchange;
+            // This one goes to select cause exchange isn't needed here as in the final round of round 2 you pass to nobody
+            RoundState = RoundState.Select;
             GameState = GameState.SecondRoundC;
         }
 
@@ -306,7 +322,7 @@ public class GameController : MonoBehaviour
             AttackPhase = AttackPhase.None;
             RoundState = RoundState.Exchange;
             GameState = GameState.BossRoundA;
-
+            InitiateBoss();
             EndRound();
         }
 
@@ -336,12 +352,24 @@ public class GameController : MonoBehaviour
         TriggerPlushies();
     }
 
+    public void InitiateBoss()
+    {
+        _Clock.UpdateBaseTimeSpeed(40);
+        _RoofLight.TriggerBossFight();
+        _AberrationNpc.gameObject.gameObject.SetActive(true);
+        DealCards();
+    }
+
     public void EndRound()
     {
         _Units[0].ClearTreats();
         _Units[1].ClearTreats();
         _Units[2].ClearTreats();
         _Player.ClearTreats();
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            _AberrationNpc.ClearTreats();
+        }
     }
 
     public int GetMultiplier(CardHolderType holderType, CardColour colour, bool isIterate)
@@ -416,6 +444,16 @@ public class GameController : MonoBehaviour
             }
         }
 
+        if(GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            GameSettings.Conductor.PlaySound(GameSound.CardDeal);
+            var _aberrationCardCount = _AberrationNpc.Cards.Where(x => x.CardData?.Owner == null).Count();
+            while (_aberrationCardCount != 0)
+            {
+                _AberrationNpc.AddCard(_Deck.TakeCard(), ref _this);
+                _aberrationCardCount = _AberrationNpc.Cards.Where(x => x.CardData?.Owner == null).Count();
+            }
+        }
     }
 
     private void ExchangeCards()
@@ -528,7 +566,14 @@ public class GameController : MonoBehaviour
                     _Deck.RefillDeck();
                 }
                 _Clock.AddTargetTime(2, 0, 1);
-                DealCards();
+                
+                if ( GameState != GameState.ThirdRoundC)
+                // BOSS TESTING
+                //if (GameState != GameState.TutorialRound && GameState != GameState.ThirdRoundC)
+                {
+                    // Not doing it for third round c, as boss doesn't exist yet so he needs to be spawned in and deal his own cards
+                    DealCards();
+                }
                 TriggerGameState();
                 break;
         }
@@ -540,6 +585,10 @@ public class GameController : MonoBehaviour
         _Units[0].CalculateValues();
         _Units[1].CalculateValues();
         _Units[2].CalculateValues();
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            _AberrationNpc.CalculateValues();
+        }
         _Player.CalculateValues();
     }
 
@@ -548,19 +597,34 @@ public class GameController : MonoBehaviour
         _Units[0].ForceHideDisplay();
         _Units[1].ForceHideDisplay();
         _Units[2].ForceHideDisplay();
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            _AberrationNpc.ForceHideDisplay();
+        }
         _Player.ForceHideDisplay();
     }
 
     private void AIAttackSelect()
     {
-        _Units[0].RandomiseAttackSelect();
-        _Units[1].RandomiseAttackSelect();
-        _Units[2].RandomiseAttackSelect();
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            _AberrationNpc.RandomiseAttackSelect();
+        }
+        else
+        {
+            _Units[0].RandomiseAttackSelect();
+            _Units[1].RandomiseAttackSelect();
+            _Units[2].RandomiseAttackSelect();
+        }
     }
 
     private void CleanupUnits()
     {
         _Player.DiscardAfterAttack();
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            _AberrationNpc.DiscardAfterAttack();
+        }
         _Units[0].DiscardAfterAttack();
         _Units[1].DiscardAfterAttack();
         _Units[2].DiscardAfterAttack();
@@ -597,6 +661,12 @@ public class GameController : MonoBehaviour
             _Player.SwordAttack(_Units[2].Sword);
         }
 
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            _Player.SwordAttack(_AberrationNpc.Sword);
+            _AberrationNpc.SwordAttack(_Player.Sword);
+        }
+
         _Units[0].SwordAttack(_Player.Sword);
         _Units[1].SwordAttack(_Player.Sword);
         _Units[2].SwordAttack(_Player.Sword);
@@ -622,6 +692,12 @@ public class GameController : MonoBehaviour
             _Units[1].MagicAttack(_Units[2].Magic);
             _Units[0].MagicAttack(_Units[2].Magic);
             _Player.MagicAttack(_Units[2].Magic);
+        }
+
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            _Player.MagicAttack(_AberrationNpc.Magic);
+            _AberrationNpc.MagicAttack(_Player.Magic);
         }
 
         _Units[0].MagicAttack(_Player.Magic);
@@ -659,6 +735,16 @@ public class GameController : MonoBehaviour
                 Npc3DisplayCards[_i].Show();
             }
         }
+
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            for (int _i = 0; _i < _AberrationNpc.AttackCards.Count; _i++)
+            {
+                AberrationDisplayCards[_i].Generate(_AberrationNpc.AttackCards[_i], ref _gameController);
+                AberrationDisplayCards[_i].Show();
+            }
+        }
+
         for (int _i = 0; _i < _Player.AttackCards.Count; _i++)
         {
             PlayerDisplayCards[_i].Generate(_Player.AttackCards[_i], ref _gameController);
@@ -690,6 +776,14 @@ public class GameController : MonoBehaviour
         for (int _i = 0; _i < PlayerDisplayCards.Count; _i++)
         {
             PlayerDisplayCards[_i].Hide();
+        }
+
+        if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
+        {
+            for (int _i = 0; _i < AberrationDisplayCards.Count; _i++)
+            {
+                AberrationDisplayCards[_i].Hide();
+            }
         }
     }
 
@@ -794,45 +888,23 @@ public class GameController : MonoBehaviour
     public void RotateCardRoundBoss()
     {
         var _this = this;
-        var _chickenUnit = _Units.FirstOrDefault(x => x.IsChicken);
-        var _ballUnitOne = _Units.FirstOrDefault(x => x.IsBall);
-        var _ballUnitTwo = _Units.LastOrDefault(x => x.IsBall);
-
-        _chickenUnit.RandomiseSelected();
-        _ballUnitTwo.RandomiseSelected();
-        _ballUnitTwo.RandomiseSelected();
+        _AberrationNpc.RandomiseSelected();
 
         var _playerSelectedCards = _Player.SelectedCards();
         _Player.RemoveSelectedCards();
-        var _unitChickenSelectedCards = _chickenUnit.SelectedCards();
-        _chickenUnit.RemoveSelectedCards();
-        var _unitOneSelectedCards = _chickenUnit.SelectedCards();
-        _chickenUnit.RemoveSelectedCards();
-        var _unitTwoSelectedCards = _ballUnitTwo.SelectedCards();
-        _ballUnitTwo.RemoveSelectedCards();
+        var _aberrationSelectedCards = _AberrationNpc.SelectedCards();
+        _AberrationNpc.RemoveSelectedCards();
 
         for (int _i = 0; _i < _playerSelectedCards.Count; _i++)
         {
             var _card = _playerSelectedCards[_i];
-            _chickenUnit.AddCard(_card, ref _this);
+            _AberrationNpc.AddCard(_card, ref _this);
         }
 
-        for (int _i = 0; _i < _unitChickenSelectedCards.Count; _i++)
+        for (int _i = 0; _i < _aberrationSelectedCards.Count; _i++)
         {
-            var _card = _unitChickenSelectedCards[_i];
+            var _card = _aberrationSelectedCards[_i];
             _Player.AddCard(_card, ref _this);
-        }
-
-        for (int _i = 0; _i < _unitOneSelectedCards.Count; _i++)
-        {
-            var _card = _unitOneSelectedCards[_i];
-            _ballUnitTwo.AddCard(_card, ref _this);
-        }
-
-        for (int _i = 0; _i < _unitTwoSelectedCards.Count; _i++)
-        {
-            var _card = _unitTwoSelectedCards[_i];
-            _ballUnitTwo.AddCard(_card, ref _this);
         }
     }
 
@@ -845,7 +917,12 @@ public class GameController : MonoBehaviour
 
         if(RoundState == RoundState.Exchange && GameState == GameState.TutorialRound && _Player.SelectedCardCount() != 3)
         {
-            _UIHandler.ShowInsult();
+            _UIHandler.ShowTutorialInsult();
+        }
+
+        if (RoundState == RoundState.Exchange && GameState != GameState.TutorialRound && _Player.SelectedCardCount() != 3)
+        {
+            _UIHandler.ShowGameplayInsult();
         }
 
         if (RoundState == RoundState.Exchange && _Player.SelectedCardCount() != 3)
@@ -869,7 +946,7 @@ public class GameController : MonoBehaviour
 
     private void CalculateNextDead()
     {
-        var _topUnit = _Units.Where(x => !x.IsDead).OrderBy(x => x.Treats).FirstOrDefault();
+        var _topUnit = _Units.Where(x => !x.IsDead).OrderByDescending(x => x.Treats).FirstOrDefault();
         if(_Player.Treats > _topUnit.Treats)
         {
             StartGameOver();
@@ -884,10 +961,20 @@ public class GameController : MonoBehaviour
     {
         EndRound();
 
+        _Clock.Reset();
         _RoofLight.TriggerForce(new Vector2(-500, 0));
         _RoofLight.TriggerFlicker(Color.blue, 3f, new List<float>() { 0.2f, 0.25f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.61f });
+        _RoofLight.Reset();
         _Clock.AddTargetTime(0, -2, -60);
+        _AberrationNpc.Reset();
+        _AberrationNpc.gameObject.gameObject.SetActive(false);
         _IsGameOver = true;
+    }
+
+    private void WinGame()
+    {
+        _Clock.Reset();
+        Debug.Log("Congrats you won lol");
     }
 
     private void FinishGameOver() {
@@ -895,6 +982,7 @@ public class GameController : MonoBehaviour
         _CurrentRandomCard = 0;
         AttackPhase = AttackPhase.None;
         RoundState = RoundState.Exchange;
+        GameState = GameState.FirstRoundA;
         for (int _i = 0; _i < RandomDisplayCards.Count; _i++)
         {
             RandomDisplayCards[_i].Reset();
@@ -913,8 +1001,7 @@ public class GameController : MonoBehaviour
         _Deck.RefillDeck();
         DealCards();
         TriggerPlushies();
-        GameState = GameState.FirstRoundA;
-
+        
         Debug.Log("Show blood");
         Debug.Log("Make noise");
         Debug.Log("Make spook");
@@ -923,7 +1010,14 @@ public class GameController : MonoBehaviour
 
     private void CalculateBossDead()
     {
-        Debug.Log("Trigger Credits!");
+        if (_Player.Treats > _AberrationNpc.Treats)
+        {
+            StartGameOver();
+        }
+        else
+        {
+            WinGame();
+        }
     }
 
     private void TriggerPlushies()
@@ -1051,13 +1145,16 @@ public class GameController : MonoBehaviour
                 }
                 break;
             case GameState.BossRoundA:
-                Debug.Log("Haven't done the boss plush yet!");
+                _AberrationNpc.TriggerChicken(true);
+                _AberrationNpc.TriggerBall(false);
                 break;
             case GameState.BossRoundB:
-                Debug.Log("Haven't done the boss plush yet!");
+                _AberrationNpc.TriggerChicken(true);
+                _AberrationNpc.TriggerBall(false);
                 break;
             case GameState.BossRoundC:
-                Debug.Log("Haven't done the boss plush yet!");
+                _AberrationNpc.TriggerChicken(true);
+                _AberrationNpc.TriggerBall(false);
                 break;
             default:
                 break;

@@ -13,6 +13,13 @@ public class HolderCard : Card
         base.Start();
         IsHolderCard = true;
     }
+    public override void Hide()
+    {
+        base.Hide();
+        _BigNumber.enabled = false;
+        _Multiplier.gameObject.SetActive(false);
+    }
+
 
     public override void RawPopulate()
     {
@@ -32,6 +39,7 @@ public class HolderCard : Card
                 break;
         }
         _BigNumber.enabled = true;
+        _SpriteRenderer.enabled = true;
     }
 
     public override void OnBeginDrag(PointerEventData eventData)
@@ -61,6 +69,13 @@ public class HolderCard : Card
             _Multiplier.enabled = true;
         }
 
+        if (IsSwappingHolder)
+        {
+            // this way it doesn't do anything dumb?
+            IsSwappingHolder = false;
+            return;
+        }
+
         if (IsHolderCard)
         {
             var _isHolding = eventData.pointerDrag.GetComponent<CardHolder>();
@@ -72,7 +87,6 @@ public class HolderCard : Card
                 var _cardMultiplier = _GameController.GetMultiplier(CardHolder.Type, CardData.Colour, true);
                 SetMultiplier(_cardMultiplier);
                 Hide();
-
             }
         }
         CardDrag.Instance.Hide();

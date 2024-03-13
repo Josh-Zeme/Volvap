@@ -5,13 +5,17 @@ using UnityEngine.Rendering.Universal;
 
 public class RoofLight : MonoBehaviour
 {
-    [SerializeField] private Color _OriginalColor;
-    [SerializeField] private Color _FlickerColor;
+    [SerializeField] private GameController _GameController;
+    [SerializeField] private Bell _Bell;
+    [SerializeField] private Color _OriginalColour;
+    [SerializeField] private Color _BossColour;
+    [SerializeField] private Color _FlickerColour;
     [SerializeField] private Rigidbody2D _Rigidbody2D;
     [SerializeField] private Light2D _Light2D;
 
     public bool IsFlickering = false;
     private bool _IsFlickered = false;
+    private bool _IsBossFight = false;
     private List<float> _FlickerIntervals = new List<float>();
     private float _FlickerLength = 0f;
     private float _FlickerTimeRemaining = 0;
@@ -20,7 +24,7 @@ public class RoofLight : MonoBehaviour
     public void Start()
     {
         _InitialIntensity = _Light2D.intensity;
-        _OriginalColor = _Light2D.color;
+        _OriginalColour = _Light2D.color;
     }
 
     public void FixedUpdate()
@@ -34,13 +38,30 @@ public class RoofLight : MonoBehaviour
                 _Light2D.intensity = _InitialIntensity;
                 _IsFlickered = false;
                 _FlickerIntervals.Clear();
-                _Light2D.color = _OriginalColor;
+                _Light2D.color = _IsBossFight ? _BossColour : _OriginalColour;
             } else if(_FlickerIntervals.Any() && _FlickerTimeRemaining > _FlickerIntervals.First())
             {
                 _FlickerIntervals.RemoveAt(0);
                 Flicker();
             }
         }
+    }
+
+    public void SetIntensity(float intensity)
+    {
+        _InitialIntensity = intensity;
+        _Light2D.intensity = _IsFlickered ? 0 : _InitialIntensity;
+    }
+
+    public void TriggerBossFight()
+    {
+        _Light2D.color = _BossColour;
+        _IsBossFight = true;
+    }
+
+    public void Reset()
+    {
+        _IsBossFight = false;
     }
 
     public void TriggerForce(Vector2 force)
@@ -50,8 +71,8 @@ public class RoofLight : MonoBehaviour
 
     public void TriggerFlicker(Color flickerColour, float flickerLength, List<float> flickerIntervals)
     {
-        _FlickerColor = flickerColour;
-        _Light2D.color = _FlickerColor;
+        _FlickerColour = flickerColour;
+        _Light2D.color = _FlickerColour;
         _FlickerIntervals = flickerIntervals;
         IsFlickering = true;
         _FlickerTimeRemaining = 0;
@@ -60,7 +81,15 @@ public class RoofLight : MonoBehaviour
 
     private void Flicker()
     {
-        _Light2D.intensity = _IsFlickered ? 0 : _InitialIntensity;
         _IsFlickered = !_IsFlickered;
+        if (_IsFlickered && _GameController.GameState == GameState.TutorialRound)
+        {
+            _Bell.MakeUnlit();
+        }
+        else if (_GameController.GameState == GameState.TutorialRound)
+        {
+            _Bell.MakeLit();
+        }
+        _Light2D.intensity = _IsFlickered ? 0 : _InitialIntensity;
     }
 }

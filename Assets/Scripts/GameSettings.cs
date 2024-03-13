@@ -13,6 +13,16 @@ public static class GameSettings
 
     #endregion
 
+    #region Light Region
+
+    public static float BaseGlobalLight = 0.1f;
+    public static float BaseRoofLight = 0.56f;
+    public static float TutorialGlobalLight = 0f;
+    public static float TutorialRoofLight = 0.1f;
+
+
+    #endregion
+
     #region TimeRegion
 
     public static int HoursInDay = 24;

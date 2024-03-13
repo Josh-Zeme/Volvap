@@ -80,6 +80,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _GameController: {fileID: 0}
   _Animator: {fileID: 2198039879657530883}
+  _SpriteRenderer: {fileID: 8421434951321938450}
+  _Unlit: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  _Lit: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
 --- !u!212 &8421434951321938450
 SpriteRenderer:
   m_ObjectHideFlags: 0

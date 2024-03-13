@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class UIHandler : MonoBehaviour
 {
     [SerializeField] private StartMenuHandler _StartMenuHandler;
-
+    [SerializeField] private Light2D _GlobalLight;
+    [SerializeField] private RoofLight _RoofLight;
+    [SerializeField] private Bell _Bell;
     #region Tutorial Instructions
 
     [SerializeField] private GameObject _TutorialInstructions;
@@ -20,6 +23,13 @@ public class UIHandler : MonoBehaviour
 
     #endregion
 
+    #region Gameplay instructions
+
+    [SerializeField] private GameObject _GamePlaySelect;
+    [SerializeField] private GameObject _GamePlayDrag;
+    [SerializeField] private GameObject _GamePlaySelectInsult;
+
+    #endregion
 
     [SerializeField] private CardHolder _SwordCardHolder;
     [SerializeField] private CardHolder _ShieldCardHolder;
@@ -31,13 +41,22 @@ public class UIHandler : MonoBehaviour
         switch (gameState)
         {
             case GameState.None:
+                _RoofLight.SetIntensity(GameSettings.TutorialRoofLight);
+                _Bell.MakeUnlit();
+                _GlobalLight.intensity = GameSettings.TutorialGlobalLight;
                 _YouLoseTryAgain.gameObject.SetActive(false);
                 break;
             case GameState.Menu:
+                _GlobalLight.intensity = GameSettings.TutorialGlobalLight;
+                _RoofLight.SetIntensity(GameSettings.TutorialRoofLight);
+                _Bell.MakeUnlit();
                 _StartMenuHandler.gameObject.SetActive(true);
                 _YouLoseTryAgain.gameObject.SetActive(false);
                 break;
             case GameState.TutorialRound:
+                _GlobalLight.intensity = GameSettings.TutorialGlobalLight;
+                _RoofLight.SetIntensity(GameSettings.TutorialRoofLight);
+                _Bell.MakeUnlit();
                 _YouLoseTryAgain.gameObject.SetActive(false);
                 switch (roundState)
                 {
@@ -84,9 +103,16 @@ public class UIHandler : MonoBehaviour
                 }
                 break;
             default:
+                _GlobalLight.intensity = GameSettings.BaseGlobalLight;
+                _RoofLight.SetIntensity(GameSettings.BaseRoofLight);
+                _Bell.MakeLit();
                 switch (roundState)
                 {
+                    case RoundState.Exchange:
+                        _GamePlaySelect.gameObject.SetActive(true);
+                        break;
                     case RoundState.Select:
+                        _GamePlayDrag.gameObject.SetActive(true);
                         TriggerCardHolders(true);
                         break;
                     case RoundState.Attack:
@@ -134,6 +160,8 @@ public class UIHandler : MonoBehaviour
     }
 
     public void DisableAllElements() {
+        _GamePlaySelect.gameObject.SetActive(false);
+        _GamePlayDrag.gameObject.SetActive(false);
         _StartMenuHandler.gameObject.SetActive(false);
         _TutorialInstructions.gameObject.SetActive(false);
         _TutorialStart.gameObject.SetActive(false);
@@ -150,8 +178,13 @@ public class UIHandler : MonoBehaviour
         _YouLoseTryAgain.gameObject.SetActive(true);
     }
 
-    public void ShowInsult()
+    public void ShowTutorialInsult()
     {
         _TutorialInstructionInsult.gameObject.SetActive(true);
+    }
+
+    public void ShowGameplayInsult()
+    {
+        _GamePlaySelectInsult.gameObject.SetActive(true);
     }
 }
