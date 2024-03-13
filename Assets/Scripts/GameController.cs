@@ -23,7 +23,7 @@ public enum RoundState
 
 public enum AttackPhase
 {
-    None = 0, Setup = 1, PlaceCard = 2, Display = 3, SwordAttack = 4, MagicAttack = 5, RandomiseCards = 6, CleanupUnits = 7, DrawCards = 8
+    None = 0, Setup = 1, PlaceCard = 2, Display = 3, SwordAttack = 4, MagicAttack = 5, UnitDestroy = 6, RandomiseCards = 7, CleanupUnits = 8, DrawCards = 9
 }
 
 public class GameController : MonoBehaviour
@@ -92,6 +92,7 @@ public class GameController : MonoBehaviour
                                 //Start smoking again
                                 _Units[_i].TriggerSmoking();
                             }
+                            _Player.TriggerSmoking();
                             DealCards();
                             TriggerRoundState();
                         }
@@ -131,6 +132,7 @@ public class GameController : MonoBehaviour
                     //Should stop all units from smoking
                     _Units[_i].TriggerSmoking();
                 }
+                _Player.TriggerSmoking();
                 _RoofLight.TriggerForce(new Vector2(500, 0));
                 _RoofLight.TriggerFlicker(Color.white,1.5f, new List<float>() { 0.2f, 0.25f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.61f });
 
@@ -178,6 +180,7 @@ public class GameController : MonoBehaviour
                     //Should stop all units from smoking
                     _Units[_i].TriggerSmoking();
                 }
+                _Player.TriggerSmoking();
                 _RoofLight.TriggerForce(new Vector2(450, 0));
                 //_RoofLight.TriggerFlicker(0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
                 //_Clock.TriggerAberration(0.5f, new List<float>() { 0.15f, 0.20f });
@@ -189,6 +192,7 @@ public class GameController : MonoBehaviour
             case RoundState.Attack:
                 AttackPhaseOver();
                 break;
+
         }
         _UIHandler.TriggerGameState(GameState, RoundState, AttackPhase);
     }
@@ -211,7 +215,6 @@ public class GameController : MonoBehaviour
             AttackPhase = AttackPhase.None;
             RoundState = RoundState.Exchange;
             GameState = GameState.FirstRoundB;
-            StartGameOver();
         }
         else if (GameState == GameState.FirstRoundB)
         {
@@ -224,7 +227,6 @@ public class GameController : MonoBehaviour
             RoundState = RoundState.Exchange;
             GameState = GameState.SecondRoundA;
 
-            CalculateNextDead();
             EndRound();
         }
         else if (GameState == GameState.SecondRoundA)
@@ -247,7 +249,6 @@ public class GameController : MonoBehaviour
             RoundState = RoundState.Exchange;
             GameState = GameState.ThirdRoundA;
 
-            CalculateNextDead();
             EndRound();
         }
 
@@ -272,7 +273,6 @@ public class GameController : MonoBehaviour
             RoundState = RoundState.Exchange;
             GameState = GameState.BossRoundA;
 
-            CalculateNextDead();
             EndRound();
         }
 
@@ -297,8 +297,6 @@ public class GameController : MonoBehaviour
             AttackPhase = AttackPhase.None;
             RoundState = RoundState.Exchange;
             GameState = GameState.EndGame;
-
-            CalculateBossDead();
         }
 
         TriggerPlushies();
@@ -363,6 +361,15 @@ public class GameController : MonoBehaviour
     {
         var _this = this;
         var _nonDeadUnits = _Units.Where(x => !x.IsDead).ToList();
+
+        GameSettings.Conductor.PlaySound(GameSound.CardDeal);
+        var _playerCardCount = _Player.Cards.Where(x => x.CardData?.Owner == null).Count();
+        while (_playerCardCount != 0)
+        {
+            _Player.AddCard(_Deck.TakeCard(), ref _this);
+            _playerCardCount = _Player.Cards.Where(x => x.CardData?.Owner == null).Count();
+        }
+
         for (int _i = 0; _i < _nonDeadUnits.Count; _i++)
         {
             var _unit = _nonDeadUnits[_i];
@@ -374,6 +381,7 @@ public class GameController : MonoBehaviour
                 _cardCount = _unit.Cards.Where(x => x.CardData?.Owner == null).Count();
             }
         }
+
     }
 
     private void ExchangeCards()
@@ -431,15 +439,36 @@ public class GameController : MonoBehaviour
                 SwordAttack();
                 break;
             case AttackPhase.MagicAttack:
-                AttackPhase = AttackPhase.RandomiseCards;
+                AttackPhase = AttackPhase.UnitDestroy;
                 _Clock.AddTargetTime(1, 0, 1);
                 MagicAttack();
                 break;
-            case AttackPhase.RandomiseCards:
+            case AttackPhase.UnitDestroy:
                 ForceHideDisplay();
+                HideCardsOnTable();
+                AttackPhase = AttackPhase.RandomiseCards;
+                if (GameState == GameState.FirstRoundA)
+                {
+                    StartGameOver();
+                }
+                else if (GameState == GameState.FirstRoundC)
+                {
+                    CalculateNextDead();
+                } else if (GameState == GameState.SecondRoundC)
+                {
+                    CalculateNextDead();
+                } else if (GameState == GameState.ThirdRoundC)
+                {
+                    CalculateNextDead();
+                } else if (GameState == GameState.BossRoundC)
+                {
+                    CalculateBossDead();
+                }
+            break;
+            case AttackPhase.RandomiseCards:
                 AttackPhase = AttackPhase.CleanupUnits;
                 _Clock.AddTargetTime(2, 0, 1);
-                HideCardsOnTable();
+                
                 if (GameState != GameState.TutorialRound)
                 {
                     PlaceRandomisedCards();
@@ -786,18 +815,19 @@ public class GameController : MonoBehaviour
         _RoofLight.TriggerFlicker(Color.blue, 3f, new List<float>() { 0.2f, 0.25f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.61f });
         _Clock.AddTargetTime(0, -2, -60);
         _IsGameOver = true;
-
     }
 
     private void FinishGameOver() {
         _IsGameOver = false;
         _CurrentRandomCard = 0;
+        AttackPhase = AttackPhase.None;
+        RoundState = RoundState.Exchange;
         for (int _i = 0; _i < RandomDisplayCards.Count; _i++)
         {
             RandomDisplayCards[_i].Reset();
             RandomDisplayCards[_i].Hide();
         }
-
+        _Player.Reset();
         for (int _i = 0; _i < _Units.Count; _i++)
         {
             var _unit = _Units[_i];
@@ -809,6 +839,7 @@ public class GameController : MonoBehaviour
         }
         _Deck.RefillDeck();
         DealCards();
+        TriggerPlushies();
         GameState = GameState.FirstRoundA;
 
         Debug.Log("Show blood");
