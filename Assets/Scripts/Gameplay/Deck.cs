@@ -39,6 +39,7 @@ public class Deck : MonoBehaviour
             _Cards.Add(_card);
         }
         _PreviousCount = _Cards.Count;
+        UpdateDeckAmount();
     }
 
     public void UpdateDeckAmount()

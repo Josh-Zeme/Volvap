@@ -19,6 +19,9 @@ public class Unit : MonoBehaviour
     public bool IsDead = false;
     public bool IsBall = false;
     public bool IsChicken = false;
+    [SerializeField] private SpriteRenderer _MainSprite;
+    [SerializeField] private SpriteRenderer _LeftArmSprite;
+    [SerializeField] private SpriteRenderer _RightArmSprite;
     [SerializeField] private SpriteRenderer _Ball;
 
     [SerializeField] private SpriteRenderer _Chicken;
@@ -40,6 +43,9 @@ public class Unit : MonoBehaviour
     }
     public virtual void AddCard(CardData cardData, ref GameController gameController)
     {
+        if (IsDead)
+            return;
+
         if (Cards.Count == 0)
         {
             Debug.Log("There is no cards there to be found");
@@ -88,6 +94,9 @@ public class Unit : MonoBehaviour
 
     public void AddTreats(int count)
     {
+        if (IsDead)
+            return;
+
         Treats += count;
         for (int _i = 0; _i < count; _i++)
         {
@@ -97,6 +106,8 @@ public class Unit : MonoBehaviour
 
     public void TriggerSmoking()
     {
+        if (IsDead)
+            return;
         if (_Pipe != null)
         {
             _Pipe.TriggerPipe();
@@ -105,6 +116,9 @@ public class Unit : MonoBehaviour
 
     public List<CardData> SelectedCards()
     {
+        if (IsDead)
+            return new List<CardData>();
+
         var _cardData = Cards.Where(x => x.IsSelected).Select(n => new CardData()
         {
             Colour = n.CardData.Colour,
@@ -119,6 +133,8 @@ public class Unit : MonoBehaviour
 
     public void RandomiseSelected()
     {
+        if (IsDead)
+            return;
         var _randomCardOne = Random.Range(0, Cards.Count);
         int _randomCardTwo = 0;
         int _randomCardThree = 0;
@@ -140,6 +156,8 @@ public class Unit : MonoBehaviour
 
     public void AddAttackCard(CardData cardData)
     {
+        if (IsDead)
+            return;
         var _cardData = new CardData()
         {
             Colour = cardData.Colour,
@@ -213,6 +231,9 @@ public class Unit : MonoBehaviour
 
     public void CalculateValues()
     {
+        if (IsDead)
+            return;
+
         AttackCards[0].CalculateMultiplier(AttackCards[1].Colour, AttackCards[2].Colour);
         AttackCards[1].CalculateMultiplier(AttackCards[0].Colour, AttackCards[2].Colour);
         AttackCards[2].CalculateMultiplier(AttackCards[1].Colour, AttackCards[0].Colour);
@@ -228,6 +249,8 @@ public class Unit : MonoBehaviour
 
     public void SwordAttack(int damage)
     {
+        if (IsDead)
+            return;
         Shield -= damage;
         _SwordAttack.TriggerAttack();
         if(Shield < 0)
@@ -242,6 +265,9 @@ public class Unit : MonoBehaviour
 
     public void MagicAttack(int damage)
     {
+        if (IsDead)
+            return;
+
         Debug.Log("Do the magic animation");
         //_SwordAttack.TriggerAttack();
         AddTreats(damage);
@@ -284,21 +310,33 @@ public class Unit : MonoBehaviour
 
     public void Kill()
     {
+        _MainSprite.enabled = false;
+        _LeftArmSprite.enabled = false;
+        _RightArmSprite.enabled = false;
         Debug.Log("Killing this unit");
         TriggerChicken(false);
         TriggerBall(false);
         DiscardAllCards();
         RemoveSelectedCards();
+        if(_Pipe != null)
+            _Pipe.gameObject.SetActive(false);
+
         IsDead = true;
     }
 
     public void Reset()
     {
+        _MainSprite.enabled = true;
+        _LeftArmSprite.enabled = true;
+        _RightArmSprite.enabled = true;
         Debug.Log("Resetting unit");
+        Debug.Log("hide Dead sprite");
         IsDead = false;
         TriggerChicken(false);
         TriggerBall(false);
         DiscardAllCards();
         RemoveSelectedCards();
+        if (_Pipe != null)
+            _Pipe.gameObject.SetActive(true);
     }
 }

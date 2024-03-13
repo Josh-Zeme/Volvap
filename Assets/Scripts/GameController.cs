@@ -86,7 +86,6 @@ public class GameController : MonoBehaviour
                         if (!_RoofLight.IsFlickering)
                         {
                             RoundState = RoundState.Draw;
-                            //_Clock.TriggerDrool();
                             for (int _i = 0; _i < _Units.Count; _i++)
                             {
                                 //Start smoking again
@@ -152,6 +151,33 @@ public class GameController : MonoBehaviour
             case GameState.FirstRoundC:
                 TriggerRoundState();
                 break;
+            case GameState.SecondRoundA:
+                TriggerRoundState();
+                break;
+            case GameState.SecondRoundB:
+                TriggerRoundState();
+                break;
+            case GameState.SecondRoundC:
+                TriggerRoundState();
+                break;
+            case GameState.ThirdRoundA:
+                TriggerRoundState();
+                break;
+            case GameState.ThirdRoundB:
+                TriggerRoundState();
+                break;
+            case GameState.ThirdRoundC:
+                TriggerRoundState();
+                break;
+            case GameState.BossRoundA:
+                TriggerRoundState();
+                break;
+            case GameState.BossRoundB:
+                TriggerRoundState();
+                break;
+            case GameState.BossRoundC:
+                TriggerRoundState();
+                break;
             default:
                 Debug.Log("How the hell did you get here?");
                 break;
@@ -170,7 +196,15 @@ public class GameController : MonoBehaviour
                 RoundState = RoundState.Draw;
                 break;
             case RoundState.Draw:
-                RoundState = RoundState.Exchange;
+                if(_Units.Any(x=> x.IsChicken))
+                {
+                    RoundState = RoundState.Exchange;
+                }
+                else
+                {
+                    // it skips as there is noone to trade with
+                    RoundState = RoundState.Select;
+                }
                 break;
             case RoundState.Exchange:
                 ExchangeCards();
@@ -447,11 +481,8 @@ public class GameController : MonoBehaviour
                 ForceHideDisplay();
                 HideCardsOnTable();
                 AttackPhase = AttackPhase.RandomiseCards;
-                if (GameState == GameState.FirstRoundA)
-                {
-                    StartGameOver();
-                }
-                else if (GameState == GameState.FirstRoundC)
+                
+                if (GameState == GameState.FirstRoundC)
                 {
                     CalculateNextDead();
                 } else if (GameState == GameState.SecondRoundC)
@@ -468,8 +499,11 @@ public class GameController : MonoBehaviour
             case AttackPhase.RandomiseCards:
                 AttackPhase = AttackPhase.CleanupUnits;
                 _Clock.AddTargetTime(2, 0, 1);
-                
-                if (GameState != GameState.TutorialRound)
+                if (GameState != GameState.TutorialRound
+                    && GameState != GameState.FirstRoundC
+                    && GameState != GameState.SecondRoundC
+                    && GameState != GameState.ThirdRoundC
+                    && GameState != GameState.BossRoundC)
                 {
                     PlaceRandomisedCards();
                 }
@@ -480,8 +514,19 @@ public class GameController : MonoBehaviour
                 CleanupUnits();
                 break;
             case AttackPhase.DrawCards:
-                if (GameState == GameState.TutorialRound)
+                if (GameState == GameState.TutorialRound 
+                    || GameState == GameState.FirstRoundC 
+                    || GameState == GameState.SecondRoundC 
+                    || GameState == GameState.ThirdRoundC 
+                    || GameState == GameState.BossRoundC)
+                {
+                    for (int _i = 0; _i < RandomDisplayCards.Count; _i++)
+                    {
+                        RandomDisplayCards[_i].Reset();
+                        RandomDisplayCards[_i].Hide();
+                    }
                     _Deck.RefillDeck();
+                }
                 _Clock.AddTargetTime(2, 0, 1);
                 DealCards();
                 TriggerGameState();
@@ -532,17 +577,25 @@ public class GameController : MonoBehaviour
 
     private void SwordAttack()
     {
-        _Units[1].SwordAttack(_Units[0].Sword);
-        _Units[2].SwordAttack(_Units[0].Sword);
-        _Player.SwordAttack(_Units[0].Sword);
+        if (!_Units[0].IsDead)
+        {
+            _Units[1].SwordAttack(_Units[0].Sword);
+            _Units[2].SwordAttack(_Units[0].Sword);
+            _Player.SwordAttack(_Units[0].Sword);
+        }
 
-        _Units[0].SwordAttack(_Units[1].Sword);
-        _Units[2].SwordAttack(_Units[1].Sword);
-        _Player.SwordAttack(_Units[1].Sword);
-
-        _Units[1].SwordAttack(_Units[2].Sword);
-        _Units[0].SwordAttack(_Units[2].Sword);
-        _Player.SwordAttack(_Units[2].Sword);
+        if (!_Units[1].IsDead)
+        {
+            _Units[0].SwordAttack(_Units[1].Sword);
+            _Units[2].SwordAttack(_Units[1].Sword);
+            _Player.SwordAttack(_Units[1].Sword);
+        }
+        if (!_Units[2].IsDead)
+        {
+            _Units[1].SwordAttack(_Units[2].Sword);
+            _Units[0].SwordAttack(_Units[2].Sword);
+            _Player.SwordAttack(_Units[2].Sword);
+        }
 
         _Units[0].SwordAttack(_Player.Sword);
         _Units[1].SwordAttack(_Player.Sword);
@@ -551,22 +604,26 @@ public class GameController : MonoBehaviour
 
     private void MagicAttack()
     {
-        // Show unit 1s, plush
-        _Units[1].MagicAttack(_Units[0].Magic);
-        _Units[2].MagicAttack(_Units[0].Magic);
-        _Player.MagicAttack(_Units[0].Magic);
+        if (!_Units[0].IsDead)
+        {
+            _Units[1].MagicAttack(_Units[0].Magic);
+            _Units[2].MagicAttack(_Units[0].Magic);
+            _Player.MagicAttack(_Units[0].Magic);
+        }
 
-        // show unit 2s, plush
-        _Units[0].MagicAttack(_Units[1].Magic);
-        _Units[2].MagicAttack(_Units[1].Magic);
-        _Player.MagicAttack(_Units[1].Magic);
+        if (!_Units[1].IsDead)
+        {
+            _Units[0].MagicAttack(_Units[1].Magic);
+            _Units[2].MagicAttack(_Units[1].Magic);
+            _Player.MagicAttack(_Units[1].Magic);
+        }
+        if (!_Units[2].IsDead)
+        {
+            _Units[1].MagicAttack(_Units[2].Magic);
+            _Units[0].MagicAttack(_Units[2].Magic);
+            _Player.MagicAttack(_Units[2].Magic);
+        }
 
-        // show unit 3s, plush
-        _Units[1].MagicAttack(_Units[2].Magic);
-        _Units[0].MagicAttack(_Units[2].Magic);
-        _Player.MagicAttack(_Units[2].Magic);
-
-        // show player, plush
         _Units[0].MagicAttack(_Player.Magic);
         _Units[1].MagicAttack(_Player.Magic);
         _Units[2].MagicAttack(_Player.Magic);
@@ -578,24 +635,30 @@ public class GameController : MonoBehaviour
     {
         var _gameController = this;
 
-        for(int _i = 0; _i < _Units[0].AttackCards.Count; _i++)
+        if (!_Units[0].IsDead)
         {
-            Npc1DisplayCards[_i].Generate(_Units[0].AttackCards[_i], ref _gameController);
-            Npc1DisplayCards[_i].Show();
+            for (int _i = 0; _i < _Units[0].AttackCards.Count; _i++)
+            {
+                Npc1DisplayCards[_i].Generate(_Units[0].AttackCards[_i], ref _gameController);
+                Npc1DisplayCards[_i].Show();
+            }
         }
-
-        for (int _i = 0; _i < _Units[1].AttackCards.Count; _i++)
+        if (!_Units[1].IsDead)
         {
-            Npc2DisplayCards[_i].Generate(_Units[2].AttackCards[_i], ref _gameController);
-            Npc2DisplayCards[_i].Show();
+            for (int _i = 0; _i < _Units[1].AttackCards.Count; _i++)
+            {
+                Npc2DisplayCards[_i].Generate(_Units[2].AttackCards[_i], ref _gameController);
+                Npc2DisplayCards[_i].Show();
+            }
         }
-
-        for (int _i = 0; _i < _Units[2].AttackCards.Count; _i++)
+        if (!_Units[2].IsDead)
         {
-            Npc3DisplayCards[_i].Generate(_Units[2].AttackCards[_i], ref _gameController);
-            Npc3DisplayCards[_i].Show();
+            for (int _i = 0; _i < _Units[2].AttackCards.Count; _i++)
+            {
+                Npc3DisplayCards[_i].Generate(_Units[2].AttackCards[_i], ref _gameController);
+                Npc3DisplayCards[_i].Show();
+            }
         }
-
         for (int _i = 0; _i < _Player.AttackCards.Count; _i++)
         {
             PlayerDisplayCards[_i].Generate(_Player.AttackCards[_i], ref _gameController);
@@ -633,26 +696,36 @@ public class GameController : MonoBehaviour
     private void PlaceRandomisedCards()
     {
         var _gameController = this;
-        
-        for (int _i = 0; _i < _Units[0].AttackCards.Count; _i++)
+
+
+        if (!_Units[0].IsDead)
         {
-            RandomDisplayCards[_CurrentRandomCard].Generate(_Units[0].AttackCards[_i], ref _gameController);
-            RandomDisplayCards[_CurrentRandomCard].Show();
-            _CurrentRandomCard++;
+            for (int _i = 0; _i < _Units[0].AttackCards.Count; _i++)
+            {
+                RandomDisplayCards[_CurrentRandomCard].Generate(_Units[0].AttackCards[_i], ref _gameController);
+                RandomDisplayCards[_CurrentRandomCard].Show();
+                _CurrentRandomCard++;
+            }
         }
 
-        for (int _i = 0; _i < _Units[1].AttackCards.Count; _i++)
+        if (!_Units[1].IsDead)
         {
-            RandomDisplayCards[_CurrentRandomCard].Generate(_Units[2].AttackCards[_i], ref _gameController);
-            RandomDisplayCards[_CurrentRandomCard].Show();
-            _CurrentRandomCard++;
+            for (int _i = 0; _i < _Units[1].AttackCards.Count; _i++)
+            {
+                RandomDisplayCards[_CurrentRandomCard].Generate(_Units[2].AttackCards[_i], ref _gameController);
+                RandomDisplayCards[_CurrentRandomCard].Show();
+                _CurrentRandomCard++;
+            }
         }
 
-        for (int _i = 0; _i < _Units[2].AttackCards.Count; _i++)
+        if (!_Units[2].IsDead)
         {
-            RandomDisplayCards[_CurrentRandomCard].Generate(_Units[2].AttackCards[_i], ref _gameController);
-            RandomDisplayCards[_CurrentRandomCard].Show();
-            _CurrentRandomCard++;
+            for (int _i = 0; _i < _Units[2].AttackCards.Count; _i++)
+            {
+                RandomDisplayCards[_CurrentRandomCard].Generate(_Units[2].AttackCards[_i], ref _gameController);
+                RandomDisplayCards[_CurrentRandomCard].Show();
+                _CurrentRandomCard++;
+            }
         }
 
         for (int _i = 0; _i < _Player.AttackCards.Count; _i++)
@@ -871,21 +944,21 @@ public class GameController : MonoBehaviour
                 break;
             case GameState.FirstRoundB:
                 // Rotate Left
-                _Units[0].TriggerChicken(true);
-                _Units[1].TriggerChicken(false);
-                _Units[2].TriggerChicken(true);
+                _Units[0].TriggerChicken(false);
+                _Units[1].TriggerChicken(true);
+                _Units[2].TriggerChicken(false);
 
-                _Units[0].TriggerBall(false);
-                _Units[1].TriggerBall(true);
-                _Units[2].TriggerBall(false);
+                _Units[0].TriggerBall(true);
+                _Units[1].TriggerBall(false);
+                _Units[2].TriggerBall(true);
                 break;
             case GameState.FirstRoundC:
                 // Rotate Right
-                _Units[0].TriggerChicken(true);
+                _Units[0].TriggerChicken(false);
                 _Units[1].TriggerChicken(false);
                 _Units[2].TriggerChicken(true);
 
-                _Units[0].TriggerBall(false);
+                _Units[0].TriggerBall(true);
                 _Units[1].TriggerBall(true);
                 _Units[2].TriggerBall(false);
                 break;

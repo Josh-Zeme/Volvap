@@ -872,6 +872,9 @@ MonoBehaviour:
   IsDead: 0
   IsBall: 0
   IsChicken: 0
+  _MainSprite: {fileID: 117582429}
+  _LeftArmSprite: {fileID: 811385313}
+  _RightArmSprite: {fileID: 1141537670}
   _Ball: {fileID: 2025641766}
   _Chicken: {fileID: 54725208}
   _DeadImage: {fileID: 0}
@@ -1529,6 +1532,9 @@ MonoBehaviour:
   IsDead: 0
   IsBall: 0
   IsChicken: 0
+  _MainSprite: {fileID: 180744663}
+  _LeftArmSprite: {fileID: 637263029}
+  _RightArmSprite: {fileID: 1201367682}
   _Ball: {fileID: 2026019384}
   _Chicken: {fileID: 2074832780}
   _DeadImage: {fileID: 0}
@@ -4017,11 +4023,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.28
+      value: -2.49
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.69
+      value: -4.89
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4029,7 +4035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9902681
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4041,7 +4047,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.13917309
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4053,7 +4059,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7026117182421538101, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_Enabled
@@ -4062,6 +4068,10 @@ PrefabInstance:
     - target: {fileID: 9056187113370529730, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_Name
       value: DisplayCard (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9056187113370529730, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5291,11 +5301,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.49
+      value: -1.28
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.89
+      value: -4.69
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5303,7 +5313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9902681
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalRotation.x
@@ -5315,7 +5325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.13917309
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5327,7 +5337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6378231758817051455, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7026117182421538101, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_Enabled
@@ -5336,6 +5346,10 @@ PrefabInstance:
     - target: {fileID: 9056187113370529730, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
       propertyPath: m_Name
       value: DisplayCard (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9056187113370529730, guid: 167454f658a743e41a0454358bf3faf5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14772,6 +14786,9 @@ MonoBehaviour:
   IsDead: 0
   IsBall: 0
   IsChicken: 0
+  _MainSprite: {fileID: 0}
+  _LeftArmSprite: {fileID: 0}
+  _RightArmSprite: {fileID: 0}
   _Ball: {fileID: 836441569}
   _Chicken: {fileID: 1562654568}
   _DeadImage: {fileID: 0}
@@ -18746,6 +18763,9 @@ MonoBehaviour:
   IsDead: 0
   IsBall: 0
   IsChicken: 0
+  _MainSprite: {fileID: 5366789688058528705}
+  _LeftArmSprite: {fileID: 1345786322924421081}
+  _RightArmSprite: {fileID: 3639832813274784004}
   _Ball: {fileID: 2111031395}
   _Chicken: {fileID: 1674061517}
   _DeadImage: {fileID: 0}
