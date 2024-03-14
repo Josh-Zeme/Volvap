@@ -235,7 +235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead49d61238c6674ea736c7b585f513a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Bass: {fileID: 0}
   _TyrellA: {fileID: 1228862251555645744}
   _TyrellB: {fileID: 2944416750438518952}
 --- !u!82 &1228862251555645744
@@ -248,7 +247,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ad259bb77cc557047be5e3b19dd16661, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 3da942da4a95552439201e748e5bbe54, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -344,7 +343,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: cf38809010bea3746b493b980789965a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ed0c0100869b9824ea9295226f5b4215, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
