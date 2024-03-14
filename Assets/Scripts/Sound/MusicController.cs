@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameSong
@@ -10,13 +8,14 @@ public enum GameSong
 [RequireComponent(typeof(AudioSource))]
 public class MusicController : MonoBehaviour
 {
+    [SerializeField] private AudioSource _TyrellA;
+    [SerializeField] private AudioSource _TyrellB;
+    private bool _IsMuted;
     private float _CurrentVolume;
     private GameSong _CurrentSong;
-    private AudioSource _AudioSource;
 
     public void Start()
     {
-        _AudioSource = GetComponent<AudioSource>();
         _CurrentVolume = GameSettings.MusicVolume;
         _CurrentSong = GameSong.None;
         UpdateSong(GameSong.None);
@@ -24,17 +23,28 @@ public class MusicController : MonoBehaviour
 
     public void PauseSong()
     {
-        if (_AudioSource.isPlaying)
+
+        if (_TyrellA.isPlaying)
         {
-            _AudioSource.Pause();
+            _TyrellA.Pause();
+        }
+
+        if (_TyrellB.isPlaying)
+        {
+            _TyrellB.Pause();
         }
     }
 
     public void ResumeSong()
     {
-        if (!_AudioSource.isPlaying)
+        if (_TyrellA.isPlaying)
         {
-            _AudioSource.UnPause();
+            _TyrellA.UnPause();
+        }
+
+        if (_TyrellB.isPlaying)
+        {
+            _TyrellB.UnPause();
         }
     }
 
@@ -42,42 +52,46 @@ public class MusicController : MonoBehaviour
     {
         if (gameSong == GameSong.None)
         {
-            _AudioSource.Stop();
+            _TyrellA.Stop();
+            _TyrellB.Stop();
             return;
         }
 
         if (_CurrentSong == gameSong)
             return;
 
-        var _clip = GetSongs(gameSong);
-
-        // Don't try and play songs that we haven't done!
-        if (_clip == null)
-            return;
-
         _CurrentSong = gameSong;
-
-        _AudioSource.clip = _clip;
-        _AudioSource.loop = true;
-        _AudioSource.Play();
+        _TyrellA.loop = true;
+        _TyrellA.Play();
+        _TyrellB.loop = true;
+        _TyrellB.Play();
     }
 
 
     public void TriggerMute(bool isMute)
     {
-        _CurrentVolume = isMute ? 0 : GameSettings.MusicVolume;
+        _IsMuted = isMute;
+        _CurrentVolume = _IsMuted ? 0 : GameSettings.MusicVolume;
 
-        _AudioSource.volume = _CurrentVolume;
+        _TyrellA.volume = _CurrentVolume;
+        _TyrellB.volume = _CurrentVolume;
     }
 
-    public AudioClip GetSongs(GameSong gameSong)
+    public void RemoveTyrellA()
     {
-        switch (gameSong)
-        {
-            case GameSong.MainTheme:
-                return GameSettings.GameFactory.MusicFactory.MainThemeFirst;
-        }
+        _TyrellA.Stop();
+    }
 
-        return null;
+    public void RemoveTyrellB()
+    {
+        _TyrellB.Stop();
+    }
+
+    public void Reset()
+    {
+        _CurrentVolume = _IsMuted ? 0 : GameSettings.MusicVolume;
+        TriggerMute(_IsMuted);
+        UpdateSong(GameSong.None);
+        UpdateSong(GameSong.MainTheme);
     }
 }

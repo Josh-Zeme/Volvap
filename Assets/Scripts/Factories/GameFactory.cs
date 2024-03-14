@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class GameFactory : MonoBehaviour
 {
+    [SerializeField] public Material UnlitMaterial;
+    [SerializeField] public Material LitMaterial;
+
     [SerializeField] public SoundFactory SoundFactory;
     [SerializeField] public MusicFactory MusicFactory;
     [SerializeField] public Card BaseCard;

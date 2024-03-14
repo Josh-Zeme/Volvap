@@ -6,14 +6,20 @@ public class Drool : MonoBehaviour
     [SerializeField] Animator _Animator;
     [SerializeField] SpriteRenderer _SpriteRenderer;
 
-    public void HideDrool()
+    public void Reset()
     {
         _SpriteRenderer.enabled = false;
     }
 
-    public void TriggerDrool()
+    public void TriggerDroolA()
     {
         _SpriteRenderer.enabled = true;
-        _Animator.SetTrigger("TriggerDrool");
+        _Animator.SetTrigger("TriggerA");
+    }
+
+    public void TriggerDroolB()
+    {
+        _SpriteRenderer.enabled = true;
+        _Animator.SetTrigger("TriggerB");
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Bowl : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer _SpriteRenderer;
     [SerializeField] private Treat _BaseTreat;
     [SerializeField] private Transform _TreatDropZone;
     
@@ -15,9 +16,13 @@ public class Bowl : MonoBehaviour
 
     }
 
-    public void AddTreat()
+    public void AddTreat(GameState gameState)
     {
         var _treat = Instantiate(_BaseTreat, transform);
+        if (gameState == GameState.TutorialRound)
+        {
+            _treat.Unlit();
+        }
         _treat.transform.position = _TreatDropZone.position;
         _Treats.Add(_treat);
     }
@@ -30,5 +35,15 @@ public class Bowl : MonoBehaviour
             Destroy(_treat.gameObject);
         }
         _Treats.Clear();
+    }
+
+    public void Unlit()
+    {
+        _SpriteRenderer.material = GameSettings.GameFactory.UnlitMaterial;
+    }
+
+    public void Lit()
+    {
+        _SpriteRenderer.material = GameSettings.GameFactory.UnlitMaterial;
     }
 }

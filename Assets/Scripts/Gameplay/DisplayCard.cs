@@ -22,6 +22,20 @@ public class DisplayCard : Card
 
     public override void Show()
     {
+        if(_GameController.GameState == GameState.TutorialRound)
+        {
+            _SpriteRenderer.material = GameSettings.GameFactory.UnlitMaterial;
+            _SwordSpriteRenderer.material = GameSettings.GameFactory.UnlitMaterial;
+            _ShieldSpriteRenderer.material = GameSettings.GameFactory.UnlitMaterial;
+            _MagicSpriteRenderer.material = GameSettings.GameFactory.UnlitMaterial;
+        }
+        else
+        {
+            _SpriteRenderer.material = GameSettings.GameFactory.LitMaterial;
+            _SwordSpriteRenderer.material = GameSettings.GameFactory.LitMaterial;
+            _ShieldSpriteRenderer.material = GameSettings.GameFactory.LitMaterial;
+            _MagicSpriteRenderer.material = GameSettings.GameFactory.LitMaterial;
+        }
         PopulateCard();
         _SpriteRenderer.enabled = true;
         _SwordSpriteRenderer.enabled = true;

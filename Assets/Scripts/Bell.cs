@@ -21,7 +21,6 @@ public class Bell : MonoBehaviour
 
     public void RingStandard()
     {
-        Debug.Log("Bell dinged");
         _Animator.SetTrigger("TriggerBell");
         GameSettings.Conductor.PlaySound(GameSound.HitBell);
     }

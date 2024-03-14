@@ -1,4 +1,3 @@
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public static class GameSettings
@@ -9,13 +8,15 @@ public static class GameSettings
     #region Volume Region
 
     public static float SoundVolume = 0.25f;
-    public static float MusicVolume = 0.10f;
+    public static float MusicVolume = 0.1f;
 
     #endregion
 
     #region Light Region
 
     public static float BaseGlobalLight = 0.1f;
+    public static float RoundTwoGlobalLight = 0.08f;
+    public static float RoundThreeGlobalLight = 0.04f;
     public static float BaseRoofLight = 0.56f;
     public static float TutorialGlobalLight = 0f;
     public static float TutorialRoofLight = 0.1f;

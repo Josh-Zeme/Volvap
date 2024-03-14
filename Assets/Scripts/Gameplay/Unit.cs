@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private Bowl _Bowl;
     [SerializeField] protected TurnValuesDisplay _TurnValuesDisplay;
     [SerializeField] private SwordAttack _SwordAttack;
+    [SerializeField] private MagicAttack _MagicAttack;
     public List<CardData> AttackCards = new List<CardData>();
     public int Sword;
     public int Shield;
@@ -92,15 +93,24 @@ public class Unit : MonoBehaviour
         AttackCards.Clear();
     }
 
-    public void AddTreats(int count)
+    public void AddTreats(GameState gameState, int count)
     {
         if (IsDead)
             return;
 
+        if(gameState == GameState.TutorialRound)
+        {
+            _Bowl.Unlit();
+        }
+        else
+        {
+            _Bowl.Lit();
+        }
+
         Treats += count;
         for (int _i = 0; _i < count; _i++)
         {
-            _Bowl.AddTreat();
+            _Bowl.AddTreat(gameState);
         }
     }
 
@@ -247,30 +257,30 @@ public class Unit : MonoBehaviour
         _TurnValuesDisplay.UpdateMagic(Magic);
     }
 
-    public void SwordAttack(int damage)
+    public void SwordAttack(GameState gameState, int damage)
     {
         if (IsDead)
             return;
         Shield -= damage;
-        _SwordAttack.TriggerAttack();
+        _SwordAttack.TriggerAttack(gameState);
         if(Shield < 0)
         {
             var _damageTaken = Mathf.Abs(Shield);
             Shield = 0;
-            AddTreats(_damageTaken);
+            AddTreats(gameState,_damageTaken);
         }
         _TurnValuesDisplay.UpdateShield(Shield);
     }
 
 
-    public void MagicAttack(int damage)
+    public void MagicAttack(GameState gameState, int damage)
     {
         if (IsDead)
             return;
-
-        Debug.Log("Do the magic animation");
-        //_SwordAttack.TriggerAttack();
-        AddTreats(damage);
+        if (damage > 0) {
+        _MagicAttack.TriggerAttack(gameState);
+        }
+        AddTreats(gameState, damage);
     }
 
     public void ClearTreats()

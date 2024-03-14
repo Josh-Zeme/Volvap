@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private UIHandler _UIHandler;
     [SerializeField] private CinemachineVirtualCamera _PreGameCamera;
     [SerializeField] private CinemachineVirtualCamera _InGameCamera;
-
+    [SerializeField] private Mist _Mist;
     [SerializeField] private Aberration _Aberration;
     [SerializeField] private AberrationNpc _AberrationNpc;
     [SerializeField] private Player _Player;
@@ -79,6 +79,7 @@ public class GameController : MonoBehaviour
         TriggerGameState();
         _InGameCamera.Priority = 0;
         _PreGameCamera.Priority = 1;
+        GameSettings.Conductor.Reset();
     }
 
     public void FixedUpdate()
@@ -163,59 +164,73 @@ public class GameController : MonoBehaviour
                 GameState = GameState.TutorialRound;
                 TriggerPlushies();
                 RoundState = RoundState.None;
-                //MockTreats();
-                // trigger clock move
-                for (int _i = 0; _i < _Units.Count; _i++)
-                {
-                    //Should stop all units from smoking
-                    _Units[_i].TriggerSmoking();
-                }
-                _Player.TriggerSmoking();
-                _RoofLight.TriggerForce(new Vector2(500, 0));
-                _RoofLight.TriggerFlicker(Color.white,1.5f, new List<float>() { 0.2f, 0.25f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.61f });
-
-                //_Clock.TriggerAberration(1.5f, new List<float>() { 0.6f, 0.61f });
                 _InGameCamera.Priority = 1;
                 _PreGameCamera.Priority = 0;
                 break;
             case GameState.TutorialRound:
+                TutorialAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.FirstRoundA:
+                FirstRoundAAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.FirstRoundB:
+                FirstRoundBAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.FirstRoundC:
+                FirstRoundCAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.SecondRoundA:
+                SecondRoundAAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.SecondRoundB:
+                SecondRoundBAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.SecondRoundC:
+                SecondRoundCAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.ThirdRoundA:
+                ThirdRoundAAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.ThirdRoundB:
+                ThirdRoundBAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.ThirdRoundC:
+                ThirdRoundCAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.BossRoundA:
+                BossRoundAAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.BossRoundB:
+                BossRoundBAmbience();
                 TriggerRoundState();
+                
                 break;
             case GameState.BossRoundC:
+                BossRoundCAmbience();
                 TriggerRoundState();
+                
                 break;
             default:
                 Debug.Log("How the hell did you get here?");
@@ -228,14 +243,13 @@ public class GameController : MonoBehaviour
 
     public void TriggerRoundState()
     {
-
         switch (RoundState)
         {
             case RoundState.None:
                 RoundState = RoundState.Draw;
                 break;
             case RoundState.Draw:
-                if(_Units.Any(x=> x.IsChicken && !x.IsDead))
+                if (_Units.Any(x=> x.IsChicken && !x.IsDead))
                 {
                     RoundState = RoundState.Exchange;
                 }
@@ -248,15 +262,6 @@ public class GameController : MonoBehaviour
             case RoundState.Exchange:
                 ExchangeCards();
                 RoundState = RoundState.Select;
-                for (int _i = 0; _i < _Units.Count; _i++)
-                {
-                    //Should stop all units from smoking
-                    _Units[_i].TriggerSmoking();
-                }
-                _Player.TriggerSmoking();
-                _RoofLight.TriggerForce(new Vector2(450, 0));
-                //_RoofLight.TriggerFlicker(0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
-                //_Clock.TriggerAberration(0.5f, new List<float>() { 0.15f, 0.20f });
                 break;
             case RoundState.Select:
                 RoundState = RoundState.Attack;
@@ -472,6 +477,12 @@ public class GameController : MonoBehaviour
             _playerCardCount = _Player.Cards.Where(x => x.CardData?.Owner == null).Count();
         }
 
+        for(int _i = 0; _i < _Player.Cards.Count; _i++)
+        {
+            //show for the aberation part at kill turns it fails to show them
+            _Player.Cards[_i].Show();
+        }
+
         for (int _i = 0; _i < _nonDeadUnits.Count; _i++)
         {
             var _unit = _nonDeadUnits[_i];
@@ -565,6 +576,7 @@ public class GameController : MonoBehaviour
                     CalculateNextDead();
                 } else if (GameState == GameState.SecondRoundC)
                 {
+                    GameSettings.Conductor.RemoveTyrellB();
                     CalculateNextDead();
                 } else if (GameState == GameState.ThirdRoundC)
                 {
@@ -607,9 +619,11 @@ public class GameController : MonoBehaviour
                         RandomDisplayCards[_i].Reset();
                         RandomDisplayCards[_i].Hide();
                     }
+                    _CurrentRandomCard = 0;
                     _Deck.RefillDeck();
                 }
                 _Clock.AddTargetTime(2, 0, 1);
+                _RoofLight.gameObject.SetActive(true);
                 
                 if ( GameState != GameState.ThirdRoundC)
                 // BOSS TESTING
@@ -687,66 +701,66 @@ public class GameController : MonoBehaviour
     {
         if (!_Units[0].IsDead)
         {
-            _Units[1].SwordAttack(_Units[0].Sword);
-            _Units[2].SwordAttack(_Units[0].Sword);
-            _Player.SwordAttack(_Units[0].Sword);
+            _Units[1].SwordAttack(GameState,_Units[0].Sword);
+            _Units[2].SwordAttack(GameState, _Units[0].Sword);
+            _Player.SwordAttack(GameState, _Units[0].Sword);
         }
 
         if (!_Units[1].IsDead)
         {
-            _Units[0].SwordAttack(_Units[1].Sword);
-            _Units[2].SwordAttack(_Units[1].Sword);
-            _Player.SwordAttack(_Units[1].Sword);
+            _Units[0].SwordAttack(GameState, _Units[1].Sword);
+            _Units[2].SwordAttack(GameState, _Units[1].Sword);
+            _Player.SwordAttack(GameState, _Units[1].Sword);
         }
         if (!_Units[2].IsDead)
         {
-            _Units[1].SwordAttack(_Units[2].Sword);
-            _Units[0].SwordAttack(_Units[2].Sword);
-            _Player.SwordAttack(_Units[2].Sword);
+            _Units[1].SwordAttack(GameState, _Units[2].Sword);
+            _Units[0].SwordAttack(GameState, _Units[2].Sword);
+            _Player.SwordAttack(GameState, _Units[2].Sword);
         }
 
         if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
         {
-            _Player.SwordAttack(_AberrationNpc.Sword);
-            _AberrationNpc.SwordAttack(_Player.Sword);
+            _Player.SwordAttack(GameState, _AberrationNpc.Sword);
+            _AberrationNpc.SwordAttack(GameState, _Player.Sword);
         }
 
-        _Units[0].SwordAttack(_Player.Sword);
-        _Units[1].SwordAttack(_Player.Sword);
-        _Units[2].SwordAttack(_Player.Sword);
+        _Units[0].SwordAttack(GameState, _Player.Sword);
+        _Units[1].SwordAttack(GameState, _Player.Sword);
+        _Units[2].SwordAttack(GameState, _Player.Sword);
     }
 
     private void MagicAttack()
     {
         if (!_Units[0].IsDead)
         {
-            _Units[1].MagicAttack(_Units[0].Magic);
-            _Units[2].MagicAttack(_Units[0].Magic);
-            _Player.MagicAttack(_Units[0].Magic);
+            _Units[1].MagicAttack(GameState, _Units[0].Magic);
+            _Units[2].MagicAttack(GameState, _Units[0].Magic);
+            _Player.MagicAttack(GameState, _Units[0].Magic);
         }
 
         if (!_Units[1].IsDead)
         {
-            _Units[0].MagicAttack(_Units[1].Magic);
-            _Units[2].MagicAttack(_Units[1].Magic);
-            _Player.MagicAttack(_Units[1].Magic);
+            _Units[0].MagicAttack(GameState, _Units[1].Magic);
+            _Units[2].MagicAttack(GameState, _Units[1].Magic);
+            _Player.MagicAttack(GameState, _Units[1].Magic);
         }
         if (!_Units[2].IsDead)
         {
-            _Units[1].MagicAttack(_Units[2].Magic);
-            _Units[0].MagicAttack(_Units[2].Magic);
-            _Player.MagicAttack(_Units[2].Magic);
+            _Units[1].MagicAttack(GameState,_Units[2].Magic);
+            _Units[0].MagicAttack(GameState, _Units[2].Magic);
+            _Player.MagicAttack(GameState, _Units[2].Magic);
         }
 
         if (GameState == GameState.BossRoundA || GameState == GameState.BossRoundB || GameState == GameState.BossRoundC)
         {
-            _Player.MagicAttack(_AberrationNpc.Magic);
-            _AberrationNpc.MagicAttack(_Player.Magic);
+            _Player.MagicAttack(GameState, _AberrationNpc.Magic);
+            _AberrationNpc.MagicAttack(GameState, _Player.Magic);
         }
 
-        _Units[0].MagicAttack(_Player.Magic);
-        _Units[1].MagicAttack(_Player.Magic);
-        _Units[2].MagicAttack(_Player.Magic);
+        _Units[0].MagicAttack(GameState,_Player.Magic);
+        _Units[1].MagicAttack(GameState,_Player.Magic);
+        _Units[2].MagicAttack(GameState, _Player.Magic);
     }
 
     #endregion
@@ -990,6 +1004,9 @@ public class GameController : MonoBehaviour
 
     private void CalculateNextDead()
     {
+        _GlobalLight.intensity = 0;
+        _Player.CompleteHideCards();
+        _RoofLight.gameObject.SetActive(false);
         var _topUnit = _Units.Where(x => !x.IsDead).OrderByDescending(x => x.Treats).FirstOrDefault();
         if(_Player.Treats > _topUnit.Treats)
         {
@@ -999,12 +1016,20 @@ public class GameController : MonoBehaviour
         {
             _topUnit.Kill();
         }
+
+        _Clock.Reset();
+        if (_Aberration != null)
+        {
+            _Aberration.Reset();
+        }
+        _Mist.gameObject.gameObject.SetActive(false);
     }
 
     private void StartGameOver()
     {
         EndRound();
-
+        _GlobalLight.intensity = GameSettings.BaseGlobalLight;
+        _Mist.gameObject.SetActive(false);
         _Clock.Reset();
         _RoofLight.TriggerForce(new Vector2(-500, 0));
         _RoofLight.TriggerFlicker(Color.blue, 3f, new List<float>() { 0.2f, 0.25f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.61f });
@@ -1017,9 +1042,13 @@ public class GameController : MonoBehaviour
 
     private void WinGame()
     {
+        GameSettings.Conductor.RemoveTyrellA();
+        _AberrationNpc.ClearTreats();
+        _Aberration.Reset();
         GameState = GameState.EndGame;
+        _GlobalLight.intensity = GameSettings.BaseGlobalLight;
         _IsGameWon = true;
-        _AberrationNpc.Reset();
+        _Mist.gameObject.SetActive(false);
         _AberrationNpc.gameObject.gameObject.SetActive(false);
         _Player.RemoveSelectedCards();
         _Player.CompleteHideCards();
@@ -1043,6 +1072,7 @@ public class GameController : MonoBehaviour
 
     private void FinishedWinGame()
     {
+        
         for (int _i = 0; _i < RandomDisplayCards.Count; _i++)
         {
             RandomDisplayCards[_i].Reset();
@@ -1064,9 +1094,12 @@ public class GameController : MonoBehaviour
         RoundState = RoundState.None;
         GameState = GameState.Menu;
         _UIHandler.TriggerGameState(GameState, RoundState, AttackPhase);
+        GameSettings.Conductor.Reset();
     }
 
     private void FinishGameOver() {
+        GameSettings.Conductor.Reset();
+        _AberrationNpc.ClearTreats();
         _IsGameOver = false;
         _CurrentRandomCard = 0;
         AttackPhase = AttackPhase.None;
@@ -1110,6 +1143,406 @@ public class GameController : MonoBehaviour
             return true;
         }
     }
+
+
+    #region Ambience
+
+    public void TutorialAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+                
+                break;
+            case RoundState.Exchange:
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+                
+                break;
+            case RoundState.Select:
+                break;
+            case RoundState.Attack:
+                break;
+        }
+    }
+
+    #region FirstRound
+    public void FirstRoundAAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            case RoundState.Exchange:
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+
+                break;
+            case RoundState.Select:
+                break;
+            case RoundState.Attack:
+                _RoofLight.TriggerFlicker(Color.white,0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Clock.TriggerDroolA();
+                break;
+        }
+    }
+
+    public void FirstRoundBAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            
+            case RoundState.Exchange:
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Clock.TriggerDroolB();
+                break;
+            case RoundState.Select:
+                break;
+            case RoundState.Attack:
+                break;
+        }
+    }
+
+    public void FirstRoundCAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            case RoundState.Exchange:
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+
+                break;
+            case RoundState.Select:
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Aberration.TriggerRunes();
+                _Aberration.TriggerFlicker(0.5f, new List<float>() { 0.15f, 0.20f });
+                break;
+            case RoundState.Attack:
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                break;
+        }
+    }
+    #endregion
+
+    #region SecondRound
+    public void SecondRoundAAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+                Debug.Log("It hits the second round A Draw");
+                break;
+            case RoundState.Exchange:
+                _GlobalLight.intensity = GameSettings.RoundTwoGlobalLight;
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+
+                break;
+            case RoundState.Select:
+                break;
+            case RoundState.Attack:
+                _RoofLight.TriggerFlicker(Color.white, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Clock.TriggerDroolA();
+                break;
+        }
+    }
+
+    public void SecondRoundBAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+                break;
+            case RoundState.Exchange:
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Clock.TriggerDroolB();
+                _Aberration.TriggerFlicker(0.5f, new List<float>() { 0.15f, 0.20f });
+                _Aberration.TriggerRunes();
+                _Aberration.TriggerArms();
+                break;
+            case RoundState.Select:
+                break;
+            case RoundState.Attack:
+                break;
+        }
+    }
+
+    public void SecondRoundCAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            case RoundState.Exchange:
+                // Doesn't exist in this round
+                break;
+            case RoundState.Select:
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                break;
+            case RoundState.Attack:
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Aberration.TriggerRunes();
+                _Aberration.TriggerFlicker(0.5f, new List<float>() { 0.15f, 0.20f });
+                break;
+        }
+    }
+    #endregion
+
+    #region Third Round
+    public void ThirdRoundAAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            case RoundState.Exchange:
+                _GlobalLight.intensity = GameSettings.RoundThreeGlobalLight;
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+
+                break;
+            case RoundState.Select:
+                _RoofLight.TriggerFlicker(Color.black, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                break;
+            case RoundState.Attack:
+                _Clock.TriggerDroolA();
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Aberration.TriggerRunes();
+                _Aberration.TriggerArms();
+                _Aberration.TriggerFlicker(0.5f, new List<float>() { 0.15f, 0.20f });
+                break;
+        }
+    }
+
+    public void ThirdRoundBAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+                _RoofLight.TriggerFlicker(Color.black, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                break;
+            case RoundState.Exchange:
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Clock.TriggerDroolB();
+                break;
+            case RoundState.Select:
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Aberration.TriggerRunes();
+                _Aberration.TriggerArms();
+                _Aberration.TriggerMouths();
+                _Aberration.TriggerFlicker(0.5f, new List<float>() { 0.15f, 0.20f });
+                break;
+            case RoundState.Attack:
+                break;
+        }
+    }
+
+    public void ThirdRoundCAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            case RoundState.Exchange:
+            case RoundState.Select:
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Mist.gameObject.SetActive(true);
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Aberration.TriggerFlicker(0.5f, new List<float>() { 0.15f, 0.20f });
+                break;
+            case RoundState.Attack:
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                break;
+        }
+    }
+    #endregion
+
+    #region Boss Round
+    public void BossRoundAAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            case RoundState.Exchange:
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Aberration.TriggerRunes();
+                _AberrationNpc.TriggerDroolA();
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+                break;
+            case RoundState.Select:
+                break;
+            case RoundState.Attack:
+                
+                break;
+        }
+    }
+
+    public void BossRoundBAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            case RoundState.Exchange:
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Aberration.TriggerRunes();
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+                _AberrationNpc.TriggerDroolB();
+                break;
+            case RoundState.Select:
+                break;
+            case RoundState.Attack:
+                break;
+        }
+    }
+
+    public void BossRoundCAmbience()
+    {
+        switch (RoundState)
+        {
+            case RoundState.None:
+                break;
+            case RoundState.Draw:
+
+                break;
+            case RoundState.Exchange:
+                _RoofLight.TriggerForce(new Vector2(600, 0));
+                _RoofLight.TriggerFlicker(Color.red, 0.5f, new List<float>() { 0.1f, 0.11f, 0.15f, 0.20f, 0.3f, 0.35f, 0.4f, 0.45f });
+                _Aberration.TriggerRunes();
+                for (int _i = 0; _i < _Units.Count; _i++)
+                {
+                    //Should stop all units from smoking
+                    _Units[_i].TriggerSmoking();
+                }
+                _Player.TriggerSmoking();
+                _RoofLight.TriggerForce(new Vector2(450, 0));
+                _AberrationNpc.TriggerDroolC();
+                break;
+            case RoundState.Select:
+                break;
+            case RoundState.Attack:
+                break;
+        }
+    }
+    #endregion
+
+    #endregion
+
 
     private void TriggerPlushies()
     {

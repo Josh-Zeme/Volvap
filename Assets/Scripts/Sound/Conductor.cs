@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Conductor : MonoBehaviour
@@ -46,5 +44,20 @@ public class Conductor : MonoBehaviour
     public void TriggerMute(bool isMuted)
     {
         _MusicController.TriggerMute(isMuted);
+    }
+
+    public void RemoveTyrellA()
+    {
+        _MusicController.RemoveTyrellA();
+    }
+
+    public void RemoveTyrellB()
+    {
+        _MusicController.RemoveTyrellB();
+    }
+
+    public void Reset()
+    {
+        _MusicController.Reset();
     }
 }

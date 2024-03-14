@@ -3,7 +3,9 @@ using UnityEngine;
 
 public class AberrationNpc : Unit
 {
-
+    [SerializeField] SpriteRenderer _DroolA;
+    [SerializeField] SpriteRenderer _DroolB;
+    [SerializeField] SpriteRenderer _DroolC;
 
     public override void CalculateValues()
     {
@@ -128,4 +130,35 @@ public class AberrationNpc : Unit
 
     }
 
+    public void TriggerDroolA()
+    {
+        _DroolA.gameObject.SetActive(true);
+        _DroolB.gameObject.SetActive(false);
+        _DroolC.gameObject.SetActive(false);
+    }
+
+
+    public void TriggerDroolB()
+    {
+        _DroolA.gameObject.SetActive(false);
+        _DroolB.gameObject.SetActive(true);
+        _DroolC.gameObject.SetActive(false);
+    }
+
+
+    public void TriggerDroolC()
+    {
+        _DroolA.gameObject.SetActive(false);
+        _DroolB.gameObject.SetActive(false);
+        _DroolC.gameObject.SetActive(true);
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+
+        _DroolA.gameObject.SetActive(false);
+        _DroolB.gameObject.SetActive(false);
+        _DroolC.gameObject.SetActive(false);
+    }
 }

@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85bbbc0611b100d479630fd9c06ce956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _SpriteRenderer: {fileID: 7696258415603879310}
   _BaseTreat: {fileID: 5755868722681676666, guid: f8fb78a1d6de20d44be7444c3caa8eb0, type: 3}
   _TreatDropZone: {fileID: 8484994847729356087}
 --- !u!212 &7696258415603879310

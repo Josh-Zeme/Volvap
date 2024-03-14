@@ -1,14 +1,15 @@
-using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Clock : MonoBehaviour
 {
     [SerializeField] private Drool _Drool;
-    [SerializeField] private Aberration _Aberration;
     [SerializeField] private SpriteRenderer _MinuteHand;
     [SerializeField] private SpriteRenderer _HourHand;
-
+    [SerializeField] private SpriteRenderer _BlueRunes;
+    [SerializeField] private Light2D _RuneLight2D;
+    
+    private float _RuneLightIntensity = 0.1f;
     private float _BaseTimeSpeed = 1;
     private float _TimeSpeed = 1;
     private float _TotalTime = 0;
@@ -31,6 +32,8 @@ public class Clock : MonoBehaviour
         if((_TargetTime < _TotalTime && _TimeSpeed > 0) || (_TargetTime > _TotalTime && _TimeSpeed < 0))
         {
             IsWaiting = false;
+            _BlueRunes.gameObject.SetActive(false);
+            _RuneLight2D.intensity = 0f;
             _TimeSpeed = _BaseTimeSpeed;
         }
 
@@ -59,21 +62,28 @@ public class Clock : MonoBehaviour
         _TargetTime = _TotalTime + minutes + (GameSettings.MinutesInHour * hours);
         _TimeSpeed = timeSpeed;
         IsWaiting = true;
-    }
 
-    public void TriggerAberration(float flickerLength, List<float> flickerIntervals)
-    {
-        if (_Aberration != null)
+        if(timeSpeed < 0)
         {
-            _Aberration.TriggerFlicker(flickerLength, flickerIntervals);
+            _BlueRunes.gameObject.SetActive(true);
+            _RuneLight2D.color = Color.blue;
+            _RuneLight2D.intensity = _RuneLightIntensity;
         }
     }
 
-    public void TriggerDrool()
+    public void TriggerDroolA()
     {
         if (_Drool != null)
         {
-            _Drool.TriggerDrool();
+            _Drool.TriggerDroolA();
+        }
+    }
+
+    public void TriggerDroolB()
+    {
+        if (_Drool != null)
+        {
+            _Drool.TriggerDroolB();
         }
     }
 
@@ -85,5 +95,9 @@ public class Clock : MonoBehaviour
     public void Reset()
     {
         _BaseTimeSpeed = 1;
+        if (_Drool != null)
+        {
+            _Drool.Reset();
+        }
     }
 }
